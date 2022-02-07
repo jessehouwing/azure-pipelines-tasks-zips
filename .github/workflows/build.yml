@@ -25,7 +25,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - run: |
-          $env:GITHUB_TOKEN | & gh auth login
+          $env:GITHUB_TOKEN | & gh auth login --with-token
           .\build.ps1
         shell: pwsh
         env:
