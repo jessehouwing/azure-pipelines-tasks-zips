@@ -28,3 +28,4 @@ jobs:
         shell: pwsh
         env:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
