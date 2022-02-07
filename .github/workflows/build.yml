@@ -24,7 +24,9 @@ jobs:
           lfs: true
 
       # Runs a single command using the runners shell
-      - run: .\build.ps1
+      - run: |
+          $env:GITHUB_TOKEN | & gh auth login
+          .\build.ps1
         shell: pwsh
         env:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
