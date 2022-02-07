@@ -23,20 +23,8 @@ $release = (& gh release view $tag --json url) | ConvertFrom-Json
 if (-not $release)
 {
     . .\download.ps1
-    & gh release create $tag -t "$tag" --target main -n """" (dir _download/*.zip)
-}
-else 
-{
-    Write-Host "Already exists: $($release.url)"
-}
-
-$tag = "m$version-sxs"
-$release = (& gh release view $tag --json url) | ConvertFrom-Json
-
-if (-not $release)
-{
     . .\generate-sxs.ps1
-    & gh release create $tag -t "$tag" --target main -n """" (dir _sxs/*.zip)
+    & gh release create $tag -t "$tag" --target main -n """" ((dir _download/*.zip) + (dir _sxs/*.zip))
 }
 else 
 {
