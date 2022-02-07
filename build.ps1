@@ -24,7 +24,11 @@ if (-not $release)
 {
     . .\download.ps1
     . .\generate-sxs.ps1
-    & gh release create $tag -t "$tag" --target main -n """" ((dir _download/*.zip) + (dir _sxs/*.zip))
+    & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
+    foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))
+    {
+        & gh release $tag $zip
+    }
 }
 else 
 {
