@@ -27,7 +27,7 @@ if (-not $release)
     & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
     foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))
     {
-        & gh release $tag $zip
+        & gh release upload $tag $zip
     }
 }
 else 
