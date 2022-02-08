@@ -19,16 +19,19 @@ popd
 Write-Host "Release version: m$version"
 
 $tag = "m$version"
+
 $release = (& gh release view $tag --json url) | ConvertFrom-Json
 if (-not $release)
 {
+    echo "TAG=m$version" >> $env:GITHUB_ENV
+
     . .\download.ps1
     . .\generate-sxs.ps1
-    & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
-    foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))
-    {
-        & gh release upload $tag $zip
-    }
+    # & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
+    # foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))
+    # {
+    #     & gh release upload $tag $zip
+    # }
 }
 else 
 {

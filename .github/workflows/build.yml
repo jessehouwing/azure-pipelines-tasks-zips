@@ -31,3 +31,14 @@ jobs:
         env:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        if: env.TAG != ''
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.TAG }}
+          prerelease: false
+          title: ${{ env.TAG }}
+          files: |
+            ./_download/*.zip
+            ./_sxs/*.zip
