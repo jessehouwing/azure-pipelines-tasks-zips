@@ -4,6 +4,8 @@ This repository contains a pre-built version of the built-in tasks or Azure DevO
 
 You can download the tasks from the Releases in this repository. [You'll find two kinds of task zips in the releases](https://github.com/jessehouwing/azure-pipelines-tasks-zips/releases/latest).
 
+The releases are named after the [current release milestone of the azure-pipelines-tasks repo](https://github.com/microsoft/azure-pipelines-tasks/branches/all?query=releases%2Fm).
+
 ## TaskName.guid-1.200.71.zip
 
 This zip contains a verbatim copy of the task. They are downloaded directly from my Azure DevOps organisation and are published unchanged.
