@@ -2,15 +2,15 @@
 
 This repository contains a pre-built version of the built-in tasks or Azure DevOps. In case you need to install an updated version into Team Foundation Server or Azure DevOps Server, you can use these zips.
 
-You can download the tasks from the Releases in this repository. You'll find two kinds of releases.
+You can download the tasks from the Releases in this repository. You'll find two kinds of task zips in the releases.
 
-## mXXX - Releases
+## TaskName.guid-1.200.71.zip
 
-These releases contain a verbatim copy of the tasks. They are downloaded directly from my Azure DevOps organisation and are published unchanged.
+This zip contains a verbatim copy of the task. They are downloaded directly from my Azure DevOps organisation and are published unchanged.
 
-## mXXX-sxs - Releases
+## TaskName-sxs.guid.1.200.71.zip
 
-These releases contain a patched copy of the tasks. These tasks can be installed side-by-side with the built-in tasks. All tasks have a new unique id and the task's name has been post-pended with `-sxs`.
+This zip contains a patched copy of the task. These tasks can be installed side-by-side with the built-in tasks. All tasks have a new unique id and the task's name has been post-pended with `-sxs`.
 
 # Intallation
 
