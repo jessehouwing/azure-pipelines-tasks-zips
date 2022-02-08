@@ -12,7 +12,7 @@ This zip contains a verbatim copy of the task. They are downloaded directly from
 
 This zip contains a patched copy of the task. These tasks can be installed side-by-side with the built-in tasks. All tasks have a new unique id and the task's name has been post-pended with `-sxs`.
 
-# Intallation
+# Installation
 
 To install these tasks into your Team Foundation Server / Azure DevOps Server use:
 
