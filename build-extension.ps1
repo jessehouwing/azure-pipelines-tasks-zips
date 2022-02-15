@@ -62,6 +62,8 @@ foreach ($extension in $extensions)
     copy .\vss-extension.$($extension.Id).json _tmp
     copy .\icon-*.png _tmp
     copy .\*.md _tmp
+    ren .\tmp\overview.$($extension.Id).md overview.md
+    del overview.*.md
     copy .\LICENSE _tmp
 
     pushd .\_tmp
