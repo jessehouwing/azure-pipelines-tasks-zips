@@ -55,7 +55,7 @@ foreach ($extension in $extensions)
     # Generate vss-extension.json
 
     [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-    $extensionManifest.version = "1.$env:TAG.0"
+    $extensionManifest.version = "1.$env:VERSION.0"
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.json" -Encoding utf8NoBOM
     copy .\vss-extension.$($extension.Id).json _tmp
     copy .\icon-*.png _tmp

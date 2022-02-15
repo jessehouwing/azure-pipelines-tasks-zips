@@ -24,9 +24,11 @@ $release = (& gh release view $tag --json url) | ConvertFrom-Json
 if (-not $release)
 {
     echo "TAG=m$version" >> $env:GITHUB_ENV
+    echo "VERSION=$version" >> $env:GITHUB_ENV
 
     . .\download.ps1
     . .\generate-sxs.ps1
+    . .\build-extension.ps1
     # & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
     # foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))
     # {
