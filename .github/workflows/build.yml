@@ -32,6 +32,16 @@ jobs:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: |
+          & npm install tfx-cli@latest -g
+          foreach ($vsix in dir ./_vsix/*.vsix)
+          {
+            & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
+          }
+        shell: pwsh
+        env:
+          AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
+
       - uses: marvinpinto/action-automatic-releases@latest
         if: env.TAG != ''
         with:
