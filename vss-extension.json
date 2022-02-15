@@ -22,7 +22,7 @@
   "screenshots": [],
   "content": {
     "details": {
-      "path": "README.md"
+      "path": "overview.md"
     },
     "license": {
       "path": "LICENSE"
@@ -55,7 +55,7 @@
   },
   "files": [
     {
-      "path": "."
+      "path": "_tasks"
     }
   ],
   "contributions": [

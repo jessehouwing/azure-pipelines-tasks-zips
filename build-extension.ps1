@@ -41,7 +41,7 @@ foreach ($extension in $extensions)
             $zip.NameString -match "(?<version>\d+\.\d+\.\d+)"
             $taskVersion = $Matches.version
 
-            Expand-Archive -Path $zip -DestinationPath _tmp/$task-sxs/v$taskVersion
+            Expand-Archive -Path $zip -DestinationPath _tmp/_tasks/$task-sxs/v$taskVersion
         }
 
         $extensionManifest.contributions += [ordered] @{
@@ -49,7 +49,7 @@ foreach ($extension in $extensions)
             "type" = "ms.vss-distributed-task.task"
             "targets" = @("ms.vss-distributed-task.tasks")
             "properties" = @{
-                "name" = "_vsix/$task-sxs"
+                "name" = "_tasks/$task-sxs"
             }
         }
     }
