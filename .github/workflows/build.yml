@@ -42,3 +42,4 @@ jobs:
           files: |
             ./_download/*.zip
             ./_sxs/*.zip
+            ./_vsix/*.vsix

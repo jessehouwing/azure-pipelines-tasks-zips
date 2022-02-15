@@ -1,0 +1,63 @@
+{
+  "manifestVersion": 1,
+  "version": "1.200.0",
+  "publisher": "jessehouwing",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "targets": [
+    {
+      "id": "Microsoft.TeamFoundation.Server",
+      "version": "[16.0, 19.0)"
+    }
+  ],
+  "icons": {
+    "default": "icon-default.png",
+    "large": "icon-large.png"
+  },
+  "tags": [
+    "Utility",
+    "Xpirit"
+  ],
+  "screenshots": [],
+  "content": {
+    "details": {
+      "path": "README.md"
+    },
+    "license": {
+      "path": "LICENSE"
+    },
+    "privacy": {
+      "path": "PRIVACY.md"
+    }
+  },
+  "links": {
+    "getstarted": {
+      "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips/wiki"
+    },
+    "support": {
+      "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips/issues"
+    },
+    "license": {
+      "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips/LICENSE"
+    },
+    "privacypolicy": {
+      "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips/blob/main/PRIVACY.md"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips"
+  },
+  "branding": {
+    "color": "rgb(36, 43, 50)",
+    "theme": "dark"
+  },
+  "files": [
+    {
+      "path": "."
+    }
+  ],
+  "contributions": [
+  ]
+}
