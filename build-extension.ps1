@@ -13,6 +13,8 @@ $extensions = @(
     #}
 )
 
+& npm install tfx-cli@latest -g
+
 if (Test-Path "_vsix")
 {
     rd "_vsix" -force -Recurse
