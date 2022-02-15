@@ -23,8 +23,11 @@ $tag = "m$version"
 $release = (& gh release view $tag --json url) | ConvertFrom-Json
 if (-not $release)
 {
-    echo "TAG=m$version" >> $env:GITHUB_ENV
-    echo "VERSION=$version" >> $env:GITHUB_ENV
+    $env:TAG = "m$version"
+    $env:VERSION = "$version"
+    
+    echo "TAG=$env:TAG" >> $env:GITHUB_ENV
+    echo "VERSION=$env:VERSION" >> $env:GITHUB_ENV
 
     . .\download.ps1
     . .\generate-sxs.ps1
