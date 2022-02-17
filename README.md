@@ -26,7 +26,7 @@ tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https
 Or [this PowerShell script](./scripts/install-task.ps1):
 
 ```
-. ./script/install-task.ps1 -CollectionUrl https://yourtfs.com/tfs/DefaultCollection/ -TaskZip Task.guid-version.zip
+. ./script/install-task.ps1 -CollectionUrl https://yourtfs.com/tfs/DefaultCollection -TaskZip Task.guid-version.zip
 ```
 # Extension
 
