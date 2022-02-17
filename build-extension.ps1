@@ -7,6 +7,8 @@ $extensions = @(
         "Id" = "DotNetCore"
         "Tasks" = @("dotnetcorecli", "dotnetcoreinstaller")
     }
+    
+    # Can't build a NuGet extension as it exceeds the maximum extension size for she marketplace.
     #@{
     #    "Id" = "NuGet"
     #    "Tasks" = @("NuGetAuthenticate", "NuGetCommand", "NuGetInstaller", "NuGetPackager", "NuGetPublisher", "NuGet", "NuGetToolInstaller")
