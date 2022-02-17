@@ -20,7 +20,7 @@ To install these tasks into your Team Foundation Server / Azure DevOps Server us
 
 ```
 npm install -g tfx-cli
-tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https://yourtfs.com/tfs/DefaultCollection/
+tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https://yourtfs.com/tfs/DefaultCollection
 ```
 
 Or [this PowerShell script](./scripts/install-task.ps1):
