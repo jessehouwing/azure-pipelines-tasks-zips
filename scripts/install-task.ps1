@@ -3,9 +3,11 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$CollectionUrl,
     [Parameter(Mandatory = $true)]
-    [string]$taskDir)
+    [string]$TaskZip)
 
 $ErrorActionPreference = 'Stop'
+
+# Adapted from: https://github.com/microsoft/azure-pipelines-tasks/tree/master/docs/pinToTaskVersion
 
 function Install-Task {
     [CmdletBinding()]
@@ -16,7 +18,7 @@ function Install-Task {
         [Parameter(Mandatory = $true)]
         $Task)
 
-    "Installing task '$($Task.Name)' version '$($Task.Version)'."
+    "Installing task '$($Task.Name)' version '$($Task.Version)' id '$($Task.Id)'."
     $url = "$($CollectionUrl.TrimEnd('/'))/_apis/distributedtask/tasks/$($Task.Id)/?overwrite=false&api-version=2.0"
 
     # Format the content.
@@ -43,45 +45,36 @@ function Install-Task {
 }
 
 # Validate the directory exists.
-if (!(Test-Path $taskDir -PathType Container)) {
-    throw "Directory does not exist: '$taskDir'."
+if (!(Test-Path $TaskZip -PathType Leaf)) 
+{
+    throw "File does not exist: '$TaskZip'."
 }
 
 # Resolve the directory info.
-$taskDir = Get-Item $taskDir
+$TaskZip = Get-Item $TaskZip
 
-# Deserialize the task.json.
-$manifest = Get-Item ([System.IO.Path]::Combine($taskDir, "task.json")) |
-    Get-Content -Encoding UTF8 |
-    Out-String |
-    ConvertFrom-Json
 
-# Get the zip bytes.
-$zipFile = "$($taskDir.TrimEnd('/', '\')).temp.zip"
-if ((Test-Path -LiteralPath $zipFile -PathType Leaf)) {
-    Remove-Item -LiteralPath $zipFile
-}
+$base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Get-Item -LiteralPath $TaskZip).FullName))
+$TaskZip.Name
 
-try {
-    $items = Get-ChildItem -LiteralPath $taskDir |
-        ForEach-Object { $_.FullName }
-    Compress-Archive -Path $items -DestinationPath $zipFile
-    $base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Get-Item -LiteralPath $zipFile).FullName))
-} finally {
-    if ((Test-Path -LiteralPath $zipFile -PathType Leaf)) {
-        Remove-Item -LiteralPath $zipFile
+if ($TaskZip.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-]){3}[0-9a-f]{12})-(?<Version>\d+\.\d+\.\d+)\.zip$")
+{
+    $manifest = $Matches
+
+    # Embed the task into the script.
+    $id = "$($manifest.Id)"
+    $name = "$($manifest.Name)"
+    $version = "$($manifest.Version)"
+    $task = @{
+        Id = $id.Replace("'", "''")
+        Name = $name.Replace("'", "''")
+        Version = $version.Replace("'", "''")
+        Base64Zip = $base64Zip
     }
-}
 
-# Embed the task into the script.
-$id = "$($manifest.Id)"
-$name = "$($manifest.Name)"
-$version = "$($manifest.Version.Major).$($manifest.Version.Minor).$($manifest.Version.Patch)"
-$task = @{
-    Id = $id.Replace("'", "''")
-    Name = $name.Replace("'", "''")
-    Version = $version.Replace("'", "''")
-    Base64Zip = $base64Zip
+    Install-Task -CollectionUrl $CollectionUrl -Task $task
 }
-
-Install-Task -CollectionUrl $CollectionUrl -Task $task
+else
+{
+    throw "File does not match required pattern 'name-id.version.zip': '$TaskZip'."
+}
