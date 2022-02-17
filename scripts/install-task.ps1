@@ -7,6 +7,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+# Adapted from: https://github.com/microsoft/azure-pipelines-tasks/tree/master/docs/pinToTaskVersion
+
 function Install-Task {
     [CmdletBinding()]
     param(
@@ -58,7 +60,7 @@ $TaskZip.Name
 if ($TaskZip.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-]){3}[0-9a-f]{12})-(?<Version>\d+\.\d+\.\d+)\.zip$")
 {
     $manifest = $Matches
-    
+
     # Embed the task into the script.
     $id = "$($manifest.Id)"
     $name = "$($manifest.Name)"
@@ -71,4 +73,8 @@ if ($TaskZip.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-
     }
 
     Install-Task -CollectionUrl $CollectionUrl -Task $task
+}
+else
+{
+    throw "File does not match required pattern 'name-id.version.zip': '$TaskZip'."
 }

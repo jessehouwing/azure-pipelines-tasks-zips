@@ -16,13 +16,18 @@ This zip contains a patched copy of the task. These tasks can be installed side-
 
 # Installation
 
-To install these tasks into your Team Foundation Server / Azure DevOps Server use:
+To install these tasks into your Team Foundation Server / Azure DevOps Server use `tfx`:
 
 ```
 npm install -g tfx-cli
 tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https://yourtfs.com/tfs/DefaultCollection/
 ```
 
+Or [this PowerShell script](./scripts/install-task.ps1):
+
+```
+. ./script/install-task.ps1 -CollectionUrl https://yourtfs.com/tfs/DefaultCollection/ -TaskZip Task.guid-version.zip
+```
 # Extension
 
 A few tasks seem to be getting the most demand. I've added a pre-built extension for those and also published these to the marketplace:
