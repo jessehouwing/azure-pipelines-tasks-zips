@@ -25,7 +25,7 @@ tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https
 
 # Extension
 
-A few tasks seem to be getting the most demand. I've added a pre-built axtension for those and also published these to the marketplace:
+A few tasks seem to be getting the most demand. I've added a pre-built extension for those and also published these to the marketplace:
 
  * 🛍️ [Visual Studio 2022 for Azure DevOps Server](https://marketplace.visualstudio.com/items?itemName=jessehouwing.visualstudio)
  * 🛍️ [DotNetCore 6 for Azure DevOps Server](https://marketplace.visualstudio.com/items?itemName=jessehouwing.dotnetcore)
