@@ -39,7 +39,7 @@ These extensions install the side-by-side version into your Azure DevOps Server.
 
 # Required agent version
 
-You will need to [install a recent agent from the azure-pipelines-agent repository](https://github.com/microsoft/azure-pipelines-agent/releases) for it to auto-detect Visual Studio 2022 (2.195.0 added support for VS2022), or alternatively add the capabilities to the agent manually.
+You will need to [install a recent agent (2.195.0 or newer) from the azure-pipelines-agent repository](https://github.com/microsoft/azure-pipelines-agent/releases) for it to auto-detect Visual Studio 2022, or alternatively add the capabilities to the agent manually.
 
 You may need to force Azure DevOps Server to not downgrade back to its preferred agent version. You can do so by setting the following environment variable at the system level on your server before launching the agent:
 
