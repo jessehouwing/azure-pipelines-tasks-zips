@@ -39,6 +39,7 @@ jobs:
             & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
           }
         shell: pwsh
+        if: env.TAG != ''
         env:
           AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
 

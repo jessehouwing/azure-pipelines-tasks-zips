@@ -30,9 +30,6 @@ foreach ($extension in $extensions)
         rd "_tmp" -force -Recurse
     }
     md _tmp
-
-    $outputDir = md "_vsix" -force
-
     $extensionManifest = gc "vss-extension.json" | ConvertFrom-Json
     $extensionManifest.contributions = @()
 
