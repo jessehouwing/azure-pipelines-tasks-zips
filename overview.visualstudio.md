@@ -16,3 +16,9 @@ You may need to force Azure DevOps Server to not downgrade back to its preferred
 ```
 AZP_AGENT_DOWNGRADE_DISABLED=true
 ```
+
+## Replacing the built-in tasks
+
+An extension is unable to replace the built-in tasks. This is a security feature of the marketplace. But it's possible to replace a task by uploading it directly to your Azure DevOps server.
+
+You can find the [latest version of the task and the scripts to overwrite the built-in tasks in this project's repository](https://github.com/jessehouwing/azure-pipelines-tasks-zips#installation).
