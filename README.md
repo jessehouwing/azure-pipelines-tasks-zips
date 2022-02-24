@@ -16,7 +16,7 @@ This zip contains a patched copy of the task. These tasks can be installed side-
 
 # Installation
 
-[Download the task from the latest release this repository](https://github.com/jessehouwing/azure-pipelines-tasks-zips/releases). To install these tasks into your Team Foundation Server / Azure DevOps Server use `tfx`:
+[Download the task from the latest release from this repository](https://github.com/jessehouwing/azure-pipelines-tasks-zips/releases). To install these tasks into your Team Foundation Server / Azure DevOps Server use `tfx`:
 
 ```
 npm install -g tfx-cli
