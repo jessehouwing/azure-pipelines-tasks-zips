@@ -54,3 +54,10 @@ jobs:
             ./_download/*.zip
             ./_sxs/*.zip
             ./_vsix/*.vsix
+            
+      - uses: tubone24/update_release@v1.0
+        with:
+          body_path: releasenote.template.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        
