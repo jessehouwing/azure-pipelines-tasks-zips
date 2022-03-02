@@ -9,8 +9,13 @@ $header = @{authorization = "Basic $([Convert]::ToBase64String([System.Text.Enco
 $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks" -Method Get -ContentType "application/json" -Headers $header | ConvertFrom-Json -AsHashtable
 
 $taskMetadatas = $tasks.value
-foreach ($taskMetadata in $taskMetadatas)
-{
+
+$taskMetadatas | ForEach-Object -Parallel {
+    $url = $using:url
+    $outputDir = $using:outputDir
+    $header = $using:header
+
+    $taskMetadata = $_
     if ($taskMetadata.serverOwned)
     {
         $taskName = $taskMetadata.name
@@ -24,4 +29,4 @@ foreach ($taskMetadata in $taskMetadatas)
             write-output "Downloaded: $taskZip"
         }
     }
-}
+} -ThrottleLimit 8

@@ -15,22 +15,23 @@ $extensions = @(
     #}
 )
 
-& npm install tfx-cli@latest -g
+& npm install tfx-cli@latest -g --silent --no-progress
 
 if (Test-Path "_vsix")
 {
-    rd "_vsix" -force -Recurse
+    rd "_vsix" -force -Recurse | Out-Null
 }
-md _vsix
+md _vsix | Out-Null
 
 foreach ($extension in $extensions)
 {
-    write-output "Building extension: $extension"
+    write-output "Building extension: $($extension.Id)"
     if (Test-Path "_tmp")
     {
-        rd "_tmp" -force -Recurse
+        rd "_tmp" -force -Recurse | Out-Null
     }
-    md _tmp
+    md _tmp | Out-Null
+
     $extensionManifest = gc "vss-extension.json" | ConvertFrom-Json
     $extensionManifest.contributions = @()
 
@@ -38,7 +39,7 @@ foreach ($extension in $extensions)
     {
         foreach ($zip in dir _sxs/$task-sxs.*.zip)
         {
-            $zip.NameString -match "(?<version>\d+\.\d+\.\d+)"
+            $zip.NameString -match "(?<version>\d+\.\d+\.\d+)" | Out-Null
             $taskVersion = $Matches.version
 
             Expand-Archive -Path $zip -DestinationPath _tmp/_tasks/$task-sxs/v$taskVersion
