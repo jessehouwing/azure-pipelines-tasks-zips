@@ -93,7 +93,7 @@ foreach ($task in $tasksToPatch)
     $taskDir = "_tmp"
 
     # Expand-Archive -Path $task -DestinationPath _tmp
-    & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
+    $7zOutput = & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
 
     $taskManifestFiles = @("task.loc.json", "task.json")
     $manifest = @{}
@@ -108,7 +108,6 @@ foreach ($task in $tasksToPatch)
             if ($taskManifestFile -eq "task.json")
             {
                 $manifest.friendlyName = "$($manifest.friendlyName) (Side-by-side)"
-                Write-Host "Updating resources..."
                 if (Test-Path -Path "$taskDir\Strings" -PathType Container)
                 {
                     $resourceFiles = dir "$taskDir\Strings\resources.resjson\resources.resjson" -recurse -ErrorAction "Continue"
@@ -135,6 +134,7 @@ foreach ($task in $tasksToPatch)
 
     copy $task "_sxs\$taskzip"
     pushd _tmp
-    & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd
+    $7zOutput = & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd
+    write-output "Created: $taskzip"
     popd
 }

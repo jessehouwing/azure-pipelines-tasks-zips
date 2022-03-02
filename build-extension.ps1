@@ -25,6 +25,7 @@ md _vsix
 
 foreach ($extension in $extensions)
 {
+    write-output "Building extension: $extension"
     if (Test-Path "_tmp")
     {
         rd "_tmp" -force -Recurse
@@ -41,6 +42,7 @@ foreach ($extension in $extensions)
             $taskVersion = $Matches.version
 
             Expand-Archive -Path $zip -DestinationPath _tmp/_tasks/$task-sxs/v$taskVersion
+            write-output "Added: $task-sxs/v$taskVersion"
         }
 
         $extensionManifest.contributions += [ordered] @{
