@@ -21,6 +21,7 @@ foreach ($taskMetadata in $taskMetadatas)
         if (-not (Test-Path -PathType Leaf -Path "$outputDir/$taskZip"))
         {
             Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
+            write-output "Downloaded: $taskZip"
         }
     }
 }
