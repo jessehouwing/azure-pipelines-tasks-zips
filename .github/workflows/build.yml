@@ -60,4 +60,5 @@ jobs:
           body_path: releasenote.template.md
         env:
           GITHUB_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ env.TAG }}
         
