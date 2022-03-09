@@ -55,7 +55,7 @@ jobs:
             ./_sxs/*.zip
             ./_vsix/*.vsix
             
-      - uses: tubone24/update_release@v1.0
+      - uses: tubone24/update_release@v1.3.1
         with:
           body_path: releasenote.template.md
         env:
