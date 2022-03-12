@@ -114,9 +114,9 @@ foreach ($task in $tasksToPatch)
                     foreach ($resourceFile in $resourceFiles)
                     {
                         $resources = (gc $resourceFile -raw) | ConvertFrom-Json -AsHashtable
-                        if (Get-Member -inputobject $resources -name "loc.friendlyName" -Membertype Properties)
+                        if ($resources["loc.friendlyName"])
                         {
-                            $resources."loc.friendlyName" = $manifest.friendlyName
+                            $resources["loc.friendlyName"] = $manifest.friendlyName
                         }
                         $resources | ConvertTo-Json -depth 100 | Out-File $resourceFile -Encoding utf8NoBOM
                     }
