@@ -5,7 +5,7 @@ $extensions = @(
     },
     @{
         "Id" = "DotNetCore"
-        "Tasks" = @("dotnetcorecli", "dotnetcoreinstaller")
+        "Tasks" = @("dotnetcorecli", "dotnetcoreinstaller", "UseDotNet")
     }
     
     # Can't build a NuGet extension as it exceeds the maximum extension size for she marketplace.
