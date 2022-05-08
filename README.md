@@ -1,6 +1,6 @@
 # Azure Pipelines Tasks Zips & Extensions
 
-This repository contains a pre-built version of the built-in tasks or Azure DevOps. In case you need to install an updated version into Team Foundation Server or Azure DevOps Server, you can use these zips.
+This repository contains a pre-built version of the built-in tasks of Azure DevOps. In case you need to install an updated version into Team Foundation Server or Azure DevOps Server, you can use these zips.
 
 You can download the tasks from the Releases in this repository. [You'll find two kinds of task zips in the releases](https://github.com/jessehouwing/azure-pipelines-tasks-zips/releases/latest).
 
