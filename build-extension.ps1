@@ -62,6 +62,8 @@ foreach ($extension in $extensions)
     $extensionManifest.version = "1.$env:VERSION.1"
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.json" -Encoding utf8NoBOM
     copy .\vss-extension.$($extension.Id).json _tmp
+    copy .\vss-extension.on-prem.json _tmp
+    copy .\vss-extension.cloud.json _tmp
     copy .\icon-*.png _tmp
     copy .\*.md _tmp
     copy .\LICENSE _tmp
