@@ -71,7 +71,7 @@ foreach ($extension in $extensions)
     
     ren overview.$($extension.Id).md overview.md
     del overview.*.md
-    & tfx extension create --extension-id "$($extension.Id)" tf--manifests "vss-extension.$($extension.Id).json" "vss-extension.onprem.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id).vsix"
+    & tfx extension create --extension-id "$($extension.Id)" --manifests "vss-extension.$($extension.Id).json" "vss-extension.onprem.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id).vsix"
     & tfx extension create --extension-id "$($extension.Id)-debug" --manifests "vss-extension.$($extension.Id).json" "vss-extension.cloud.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id)-debug.vsix"
     
     popd
