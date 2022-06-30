@@ -1,6 +1,5 @@
 {
   "name": "DotNetCore 6 for Azure DevOps Server",
   "description": "Adds side-by-side version of DotNetCore 6 for Azure DevOps Server.",
-  "id": "dotnetcore",
-  "public": true
+  "id": "dotnetcore"
 }

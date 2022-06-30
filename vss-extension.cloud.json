@@ -1,0 +1,8 @@
+{
+  "targets": [
+    {
+        "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "public": false
+}

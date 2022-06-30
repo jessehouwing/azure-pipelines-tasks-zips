@@ -1,6 +1,5 @@
 {
   "name": "Nuget 2022 for Azure DevOps Server",
   "description": "Adds side-by-side version of Nuget 2022 for Azure DevOps Server.",
-  "id": "nuget",
-  "public": true
+  "id": "nuget"
 }

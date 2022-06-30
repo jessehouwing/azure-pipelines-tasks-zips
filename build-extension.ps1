@@ -59,7 +59,7 @@ foreach ($extension in $extensions)
     # Generate vss-extension.json
 
     [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
-    $extensionManifest.version = "1.$env:VERSION.0"
+    $extensionManifest.version = "1.$env:VERSION.1"
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.json" -Encoding utf8NoBOM
     copy .\vss-extension.$($extension.Id).json _tmp
     copy .\icon-*.png _tmp
@@ -69,7 +69,8 @@ foreach ($extension in $extensions)
     
     ren overview.$($extension.Id).md overview.md
     del overview.*.md
-    & tfx extension create --manifests "vss-extension.$($extension.Id).json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id).vsix"
+    & tfx extension create --manifests "vss-extension.$($extension.Id).json" "vss-extension.on-prem.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id).vsix"
+    & tfx extension create --manifests "vss-extension.$($extension.Id).json" "vss-extension.cloud.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id)-debug.vsix"
     
     popd
     copy ./_tmp/*.vsix ./_vsix
