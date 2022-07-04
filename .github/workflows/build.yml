@@ -25,25 +25,27 @@ jobs:
 
       # Runs a single command using the runners shell
       - run: |
-          $env:GITHUB_TOKEN | & gh auth login --with-token
           .\build.ps1
         shell: pwsh
         env:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        name: Download tasks and build side-by-side versions.
 
       - run: |
-          & npm install tfx-cli@latest -g
+          & npm install tfx-cli@latest --location=global
           foreach ($vsix in dir ./_vsix/*.vsix)
           {
             & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
           }
         shell: pwsh
+        name: Publish extensions
         if: env.TAG != ''
         env:
           AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
 
       - uses: marvinpinto/action-automatic-releases@latest
+        name: Create GitHub release
         if: env.TAG != ''
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -56,6 +58,7 @@ jobs:
             ./_vsix/*.vsix
             
       - uses: tubone24/update_release@v1.3.1
+        name: Update release notes
         if: env.TAG != ''
         with:
           body_path: releasenote.template.md
