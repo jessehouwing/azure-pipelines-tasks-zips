@@ -5,12 +5,6 @@
   "categories": [
     "Azure Pipelines"
   ],
-  "targets": [
-    {
-      "id": "Microsoft.TeamFoundation.Server",
-      "version": "[16.0, 19.0)"
-    }
-  ],
   "icons": {
     "default": "icon-default.png",
     "large": "icon-large.png"
