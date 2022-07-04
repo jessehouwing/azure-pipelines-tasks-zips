@@ -32,18 +32,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         name: Download tasks and build side-by-side versions.
 
-      - run: |
-          & npm install tfx-cli@latest --location=global
-          foreach ($vsix in dir ./_vsix/*.vsix)
-          {
-            & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
-          }
-        shell: pwsh
-        name: Publish extensions
-        if: env.TAG != ''
-        env:
-          AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
-
       - uses: marvinpinto/action-automatic-releases@latest
         name: Create GitHub release
         if: env.TAG != ''
@@ -56,7 +44,7 @@ jobs:
             ./_download/*.zip
             ./_sxs/*.zip
             ./_vsix/*.vsix
-            
+
       - uses: tubone24/update_release@v1.3.1
         name: Update release notes
         if: env.TAG != ''
@@ -65,4 +53,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
           TAG_NAME: ${{ env.TAG }}
-        
+
+      - run: |
+          & npm install tfx-cli@latest --location=global
+          foreach ($vsix in dir ./_vsix/*.vsix)
+          {
+            & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
+          }
+        shell: pwsh
+        name: Publish extensions
+        if: env.TAG != ''
+        env:
+          AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
