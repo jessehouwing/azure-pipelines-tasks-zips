@@ -1,6 +1,6 @@
 # DotNetCore 6 tasks for Azure DevOps Server
 
-This extension will install the DotNetCore tasks with support for DotNetCore 6 into your Azure DevOps Server.
+This extension will install the DotNetCore tasks with support for DotNetCore 6 and 7 into your Azure DevOps Server.
 
 These tasks are installed side-by-side the original tasks
 
