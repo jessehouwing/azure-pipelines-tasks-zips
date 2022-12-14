@@ -5,10 +5,6 @@
   "categories": [
     "Azure Pipelines"
   ],
-  "icons": {
-    "default": "icon-default.png",
-    "large": "icon-large.png"
-  },
   "tags": [
     "Utility",
     "Xpirit"

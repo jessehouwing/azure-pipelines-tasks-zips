@@ -69,7 +69,7 @@ foreach ($extension in $extensions)
     copy .\vss-extension.$($extension.Id).json _tmp
     copy .\vss-extension.$($extension.Id).onprem.json _tmp
     copy .\vss-extension.cloud.json _tmp
-    copy .\icon-*.png _tmp
+    copy .\icon-*.$($extension.Id).png _tmp
     copy .\*.md _tmp
     copy .\LICENSE _tmp
     pushd .\_tmp
