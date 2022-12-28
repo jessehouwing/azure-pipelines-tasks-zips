@@ -27,6 +27,7 @@ jobs:
           Invoke-Expression "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -preview -quiet"
           "C:\Program Files\PowerShell\7-preview" >> $env:GITHUB_PATH
         name: Upgrade to latest preview of powershell 
+        if: false
         # https://github.com/PowerShell/PowerShell/issues/17404#issuecomment-1188348379
 
       # Runs a single command using the runners shell
