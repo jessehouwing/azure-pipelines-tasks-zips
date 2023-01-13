@@ -60,6 +60,7 @@ foreach ($extension in $extensions)
             $taskVersion = $Matches.version
 
             Expand-Archive -Path $zip -DestinationPath _tmp/_tasks/$task-sxs/v$taskVersion
+            Get-ChildItem -Recurse -Filter "* *" -Path "_tmp/_tasks/$task-sxs/v$taskVersion/" | Rename-Item -NewName { $_.Name -replace " ", "_" }
             write-output "Added: $task-sxs/v$taskVersion"
         }
 
@@ -79,6 +80,7 @@ foreach ($extension in $extensions)
     $extensionManifest.version = "1.$env:VERSION.6"
 
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.json" -Encoding utf8NoBOM
+    
     copy .\vss-extension.$($extension.Id).json _tmp
     copy .\vss-extension.$($extension.Id).onprem.json _tmp
     copy .\vss-extension.cloud.json _tmp
