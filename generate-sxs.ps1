@@ -92,6 +92,11 @@ foreach ($task in $tasksToPatch)
 
     $taskDir = "_tmp"
 
+    if (Test-Path -path "_sxs\$($task.Filename -replace '^([^.]+)','$1-sxs')" -PathType Container)
+    {
+        continue
+    }
+
     # Expand-Archive -Path $task -DestinationPath _tmp
     $7zOutput = & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
 
