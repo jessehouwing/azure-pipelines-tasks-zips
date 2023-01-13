@@ -92,7 +92,7 @@ foreach ($task in $tasksToPatch)
 
     $taskDir = "_tmp"
 
-    if (Test-Path -path "_sxs\$($task.Filename -replace '^([^.]+)','$1-sxs')" -PathType Container)
+    if (Test-Path -path "_sxs\$($task.Name -replace '^([^.]+)','$1-sxs')" -PathType Container)
     {
         continue
     }
