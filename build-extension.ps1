@@ -10,6 +10,19 @@ $extensions = @(
     @{
         "Id" = "Apple-Xcode"
         "Tasks" = @("InstallAppleCertificate", "InstallAppleProvisioningProfile", "Xcode")
+    },
+    @{
+        "Id" = "Azure"
+        "Tasks" = @(
+            "AzureFileCopy", 
+            "AzureKeyVault", 
+            "AzureMysqlDeployment", 
+            "AzurePowerShell", 
+            "AzureResourceGroupDeployment", 
+            "AzureResourceManagerTemplateDeployment",
+            "AzureSpringCloud",
+            "AzureVmssDeployment"
+        )
     }
 
     # Can't build a NuGet extension as it exceeds the maximum extension size for she marketplace.

@@ -1,0 +1,9 @@
+{
+  "name": "Azure for Azure DevOps Server",
+  "description": "Adds side-by-side version of Azure for Azure DevOps Server.",
+  "id": "visualstudio",
+  "icons": {
+    "default": "icon-default.visualstudio.png",
+    "large": "icon-large.visualstudio.png"
+  }
+}
