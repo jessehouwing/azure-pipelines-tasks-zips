@@ -60,9 +60,10 @@ foreach ($extension in $extensions)
             $taskVersion = $Matches.version
 
             Expand-Archive -Path $zip -DestinationPath _tmp/_tasks/$task-sxs/v$taskVersion
-            Get-ChildItem -Recurse -Filter "* *" -Path "_tmp/_tasks/$task-sxs/v$taskVersion/" | Rename-Item -NewName { $_.Name -replace " ", "_" }
             write-output "Added: $task-sxs/v$taskVersion"
         }
+
+        Get-ChildItem -Recurse -Filter "* *" -Path "_tmp/_tasks/$task-sxs" | Rename-Item -NewName { $_.Name -replace " ", "_" }
 
         $extensionManifest.contributions += [ordered] @{
             "id" = "$task-sxs"
