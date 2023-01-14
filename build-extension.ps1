@@ -61,7 +61,7 @@ foreach ($extension in $extensions)
             write-output "Added: $task-sxs/v$taskVersion"
         }
 
-        Get-ChildItem -Recurse -Filter "* *" -Path "_tmp/_tasks/$task-sxs" | Rename-Item -NewName { $_.Name -replace " ", "_" }
+        Get-ChildItem -Recurse -Filter "* *" -Path "_tmp/_tasks/$task-sxs/" | Rename-Item -NewName { $_.Name -replace " ", "_" }
 
         $extensionManifest.contributions += [ordered] @{
             "id" = "$task-sxs"
