@@ -16,11 +16,9 @@ $extensions = @(
         "Tasks" = @(
             "AzureFileCopy", 
             "AzureKeyVault", 
-            "AzureMysqlDeployment", 
             "AzurePowerShell", 
             "AzureResourceGroupDeployment", 
             "AzureResourceManagerTemplateDeployment",
-            "AzureSpringCloud",
             "AzureVmssDeployment"
         )
     }
