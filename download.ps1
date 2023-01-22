@@ -6,7 +6,7 @@ $pat = $env:AZURE_DEVOPS_PAT
 $url = "https://dev.azure.com/$org"
 $header = @{authorization = "Basic $([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(".:$pat")))"}
 
-$tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks" -Method Get -ContentType "application/json" -Headers $header | ConvertFrom-Json -AsHashtable
+$tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=true" -Method Get -ContentType "application/json" -Headers $header | ConvertFrom-Json -AsHashtable
 
 $taskMetadatas = $tasks.value
 
