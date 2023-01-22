@@ -1,9 +1,0 @@
-{
-  "name": "DotNetCore 6 and 7 for Azure DevOps Server",
-  "description": "Adds side-by-side version of DotNetCore 6 for Azure DevOps Server.",
-  "id": "dotnetcore",
-  "icons": {
-    "default": "icon-default.dotnetcore.png",
-    "large": "icon-large.dotnetcore.png"
-  }
-}

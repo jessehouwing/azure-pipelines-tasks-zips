@@ -1,9 +1,5 @@
 {
   "name": "Azure for Azure DevOps Server",
   "description": "Adds side-by-side version of Azure for Azure DevOps Server.",
-  "id": "azure",
-  "icons": {
-    "default": "icon-default.azure.png",
-    "large": "icon-large.azure.png"
-  }
+  "id": "azure"
 }

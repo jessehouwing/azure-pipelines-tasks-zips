@@ -10,18 +10,16 @@ $extensions = @(
     @{
         "Id" = "Apple-Xcode"
         "Tasks" = @("InstallAppleCertificate", "InstallAppleProvisioningProfile", "Xcode")
-    },
-    @{
-        "Id" = "Azure"
-        "Tasks" = @(
-            "AzureFileCopy", 
-            "AzureKeyVault", 
-            "AzurePowerShell", 
-            "AzureResourceGroupDeployment", 
-            "AzureResourceManagerTemplateDeployment",
-            "AzureVmssDeployment"
-        )
     }
+    #@{
+    #    "Id" = "Azure"
+    #    "Tasks" = @(
+    #        "AzureFileCopy", 
+    #        "AzurePowerShell", 
+    #        "AzureResourceGroupDeployment", 
+    #        "AzureResourceManagerTemplateDeployment"
+    #    )
+    #}
 
     # Can't build a NuGet extension as it exceeds the maximum extension size for she marketplace.
     #@{
@@ -47,7 +45,7 @@ foreach ($extension in $extensions)
     }
     md _tmp | Out-Null
 
-    $extensionManifest = gc "vss-extension.json" | ConvertFrom-Json
+    $extensionManifest = gc "./extensions/vss-extension.json" | ConvertFrom-Json
     $extensionManifest.contributions = @()
 
     foreach ($task in $extension.Tasks)
@@ -78,20 +76,19 @@ foreach ($extension in $extensions)
     [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding    
     $extensionManifest.version = "1.$env:VERSION.6"
 
-    $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.json" -Encoding utf8NoBOM
+    $extensionManifest | ConvertTo-Json -depth 100 | Out-File "_tmp/vss-extension.tasks.json" -Encoding utf8NoBOM
     
-    copy .\vss-extension.$($extension.Id).json _tmp
-    copy .\vss-extension.$($extension.Id).onprem.json _tmp
-    copy .\vss-extension.cloud.json _tmp
-    copy .\icon-*.$($extension.Id).png _tmp
+    copy .\extensions\$($extension.Id)\vss-extension.onprem.json _tmp
+    copy .\extensions\$($extension.Id)\vss-extension.json _tmp
+    copy .\extensions\$($extension.Id)\icon-*.png _tmp
+    copy .\extensions\$($extension.Id)\*.md _tmp
+    copy .\extensions\vss-extension.cloud.json _tmp
     copy .\*.md _tmp
     copy .\LICENSE _tmp
     pushd .\_tmp
 
-    ren overview.$($extension.Id).md overview.md
-    del overview.*.md
-    & tfx extension create --extension-id "$($extension.Id)" --manifests "vss-extension.$($extension.Id).json" "vss-extension.$($extension.Id).onprem.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id).vsix"
-    & tfx extension create --extension-id "$($extension.Id)-debug" --manifests "vss-extension.$($extension.Id).json" "vss-extension.cloud.json" "vss-extension.json" --output-path "_jessehouwing.$($extension.Id)-debug.vsix"
+    & tfx extension create --extension-id "$($extension.Id)" --manifests "vss-extension.json" "vss-extension.onprem.json" "vss-extension.tasks.json" --output-path "_jessehouwing.$($extension.Id).vsix"
+    & tfx extension create --extension-id "$($extension.Id)-debug" --manifests "vss-extension.json" "vss-extension.cloud.json" "vss-extension.tasks.json" --output-path "_jessehouwing.$($extension.Id)-debug.vsix"
 
     popd
     copy ./_tmp/*.vsix ./_vsix
