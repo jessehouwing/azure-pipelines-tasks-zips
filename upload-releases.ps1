@@ -28,6 +28,10 @@ foreach ($taskzip in (dir _sxs/*.zip) + (dir .\_download\*.zip))
     }
     else {
         & gh release create --repo jessehouwing/azure-pipelines-tasks-zips --title "m$($version.Minor) - Tasks" --notes-file .\releasenote.template.md "m$($version.Minor)-tasks" $taskzip.FullName
-        $knownAssets."m$($version.Minor)-tasks" = @()
+        $knownAssets."m$($version.Minor)-tasks" = @(
+            @{
+                name = $taskzip.Name
+            }
+        )
     }
 }
