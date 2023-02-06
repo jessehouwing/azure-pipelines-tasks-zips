@@ -37,29 +37,7 @@ jobs:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         name: Download tasks and build side-by-side versions.
-
-      - uses: marvinpinto/action-automatic-releases@latest
-        name: Create GitHub release
-        if: env.TAG != ''
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ env.TAG }}
-          prerelease: false
-          title: ${{ env.TAG }}
-          files: |
-            ./_download/*.zip
-            ./_sxs/*.zip
-            ./_vsix/*.vsix
-
-      - uses: tubone24/update_release@v1.3.1
-        name: Update release notes
-        if: env.TAG != ''
-        with:
-          body_path: releasenote.template.md
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-          TAG_NAME: ${{ env.TAG }}
-
+s
       - run: |
           & npm install tfx-cli@latest --location=global
           foreach ($vsix in dir ./_vsix/*.vsix)

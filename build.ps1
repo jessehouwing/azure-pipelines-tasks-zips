@@ -35,7 +35,7 @@ echo "VERSION=$env:VERSION" >> $env:GITHUB_ENV
 
 if (-not $release)
 {
-    . .\build-extension.ps1
+    # . .\build-extension.ps1
     
     # & gh release create $tag -t "$tag" --target main -n """" # ((dir _download/*.zip) + (dir _sxs/*.zip))
     # foreach ($zip in ((dir _download/*.zip) + (dir _sxs/*.zip)))

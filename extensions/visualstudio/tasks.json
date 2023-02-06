@@ -1,0 +1,3 @@
+{
+    "tasks": ["vsbuild",  "vstest", "visualstudiotestplatforminstaller",  "msbuild"]
+}

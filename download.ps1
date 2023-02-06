@@ -10,6 +10,16 @@ $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=tr
 
 $taskMetadatas = $tasks.value
 
+
+[string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
+$allAssets = @()
+foreach ($release in $existingReleases)
+{
+    $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
+    $allAssets = $allAssets + $releaseDetails.assets
+}
+
+
 $taskMetadatas | ForEach-Object -Parallel {
     $url = $using:url
     $outputDir = $using:outputDir
@@ -23,7 +33,12 @@ $taskMetadatas | ForEach-Object -Parallel {
         $taskversion = "$($taskMetadata.version.major).$($taskMetadata.version.minor).$($taskMetadata.version.patch)"
         $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-        if (-not (Test-Path -PathType Leaf -Path "$outputDir/$taskZip"))
+        if (-not (
+                (Test-Path -PathType Leaf -Path "$outputDir/$taskZip") -or
+                (($using:allAssets | Where-Object { $_.name -eq $taskZip }).Count -gt 0) -or 
+                ($taskMetadata.version.minor -lt 100)
+            ) 
+        )
         {
             Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
             write-output "Downloaded: $taskZip"
