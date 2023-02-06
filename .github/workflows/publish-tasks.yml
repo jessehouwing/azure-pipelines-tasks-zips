@@ -36,7 +36,7 @@ jobs:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         name: Download tasks and build side-by-side versions.
-s
+
       - run: |
           & npm install tfx-cli@latest --location=global
           foreach ($vsix in dir ./_vsix/*.vsix)
