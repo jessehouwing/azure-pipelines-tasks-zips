@@ -79,7 +79,7 @@ $Source = @"
 
 Add-Type -TypeDefinition $Source -Language CSharp 
 
-$outputDir = md "_sxs" -force
+$outputDir = mkdir "_sxs" -force
 
 $tasksToPatch = get-childitem "_download/*.zip"
 
@@ -87,7 +87,7 @@ foreach ($task in $tasksToPatch)
 {
     if (Test-Path "_tmp")
     {
-        rd "_tmp" -force -Recurse
+        Remove-Item "_tmp" -force -Recurse
     }
 
     $taskDir = "_tmp"
@@ -98,7 +98,7 @@ foreach ($task in $tasksToPatch)
     }
 
     # Expand-Archive -Path $task -DestinationPath _tmp
-    $7zOutput = & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
+    & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
     if ($LASTEXITCODE -ne 0)
     {
         Remove-item $task
@@ -114,17 +114,17 @@ foreach ($task in $tasksToPatch)
         $manifestPath = "$taskDir/$taskManifestFile"
         if (Test-Path -Path $manifestPath -PathType Leaf)
         {
-            $manifest = (gc $manifestPath -raw) | ConvertFrom-Json -AsHashtable
+            $manifest = (Get-Content $manifestPath -raw) | ConvertFrom-Json -AsHashtable
             $manifest.name = "$($manifest.name)-sxs"
             if ($taskManifestFile -eq "task.json")
             {
                 $manifest.friendlyName = "$($manifest.friendlyName) (Side-by-side)"
                 if (Test-Path -Path "$taskDir\Strings" -PathType Container)
                 {
-                    $resourceFiles = dir "$taskDir\Strings\resources.resjson\resources.resjson" -recurse -ErrorAction "Continue"
+                    $resourceFiles = Get-ChildItem "$taskDir\Strings\resources.resjson\resources.resjson" -recurse -ErrorAction "Continue"
                     foreach ($resourceFile in $resourceFiles)
                     {
-                        $resources = (gc $resourceFile -raw) | ConvertFrom-Json -AsHashtable
+                        $resources = (Get-Content $resourceFile -raw) | ConvertFrom-Json -AsHashtable
                         if ($resources["loc.friendlyName"])
                         {
                             $resources["loc.friendlyName"] = $manifest.friendlyName
@@ -143,10 +143,10 @@ foreach ($task in $tasksToPatch)
     $taskversion = "$($manifest.version.Major).$($manifest.version.Minor).$($manifest.version.Patch)"
     $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-    copy $task "_sxs\$taskzip"
-    pushd _tmp
-    $7zOutput = & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd
-
+    Copy-Item $task "_sxs\$taskzip"
+    Push-Location _tmp
+    
+    & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd
     if ($LASTEXITCODE -ne 0)
     {
         Remove-Item "$outputDir\$taskzip"
@@ -155,5 +155,5 @@ foreach ($task in $tasksToPatch)
     }
 
     write-output "Created: $taskzip"
-    popd
+    Pop-Location
 }
