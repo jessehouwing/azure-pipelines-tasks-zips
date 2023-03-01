@@ -1,3 +1,6 @@
 _*/
-azure-pipelines-tasks/
 .vs/
+extensions/*/LICENSE
+extensions/*/PRIVACY.md
+extensions/*/vss-extension.cloud.json
+extensions/*/vss-extension.tasks.json
