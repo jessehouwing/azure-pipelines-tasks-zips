@@ -48,6 +48,5 @@ jobs:
           }
         shell: pwsh
         name: Publish extensions
-        if: env.TAG != ''
         env:
           AZURE_MARKETPLACE_PAT: ${{ secrets.AZURE_MARKETPLACE_PAT }}
