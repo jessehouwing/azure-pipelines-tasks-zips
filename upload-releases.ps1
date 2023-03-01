@@ -8,7 +8,7 @@ foreach ($release in $existingReleases)
     $knownAssets["$release"] = $releaseDetails.assets
 }
 
-foreach ($taskzip in (dir _sxs/*.zip) + (dir .\_download\*.zip))
+foreach ($taskzip in (@(Get-ChildItem _sxs/*.zip) + @(Get-ChildItem .\_download\*.zip)))
 {
     $taskzip.Name -match "-(?<version>\d+\.\d+\.\d+)\.zip" | Out-Null
     $version = [version]$Matches.version
