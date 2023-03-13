@@ -42,6 +42,8 @@ $taskMetadatas | ForEach-Object -Parallel {
         {
             Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
             write-output "Downloaded: $taskZip"
+        } else {
+            write-output "Already have: $taskZip"
         }
     }
 } -ThrottleLimit 8
