@@ -35,6 +35,7 @@ A few tasks seem to be getting the most demand. I've added a pre-built extension
  * 🛍️ [Visual Studio 2022 for Azure DevOps Server](https://marketplace.visualstudio.com/items?itemName=jessehouwing.visualstudio)
  * 🛍️ [DotNetCore 6 and 7 for Azure DevOps Server](https://marketplace.visualstudio.com/items?itemName=jessehouwing.dotnetcore)
  * 🛍️ [Apple Xcode for Azure DevOps Server](https://marketplace.visualstudio.com/items?itemName=jessehouwing.Apple-Xcode)
+ * 🛍️ [Pre and post script tasks](https://marketplace.visualstudio.com/items?itemName=jessehouwing.pre-post-tasks)
 
 These extensions install the side-by-side version into your Azure DevOps Server.
 
