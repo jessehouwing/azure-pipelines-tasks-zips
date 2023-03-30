@@ -101,6 +101,11 @@ foreach ($task in $filesToPatch)
 
         $taskDir = "_tmp"
 
+        if (Test-Path -path "_gen\$($task.Name -replace '^([^.]+).*-',"$kind-`$1.*")" -PathType Leaf)
+        {
+            continue
+        }
+
         # Expand-Archive -Path $task -DestinationPath _tmp
         & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
         if ($LASTEXITCODE -ne 0)
