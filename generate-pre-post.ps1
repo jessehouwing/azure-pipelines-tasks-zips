@@ -79,7 +79,7 @@ $Source = @"
 
 Add-Type -TypeDefinition $Source -Language CSharp 
 
-$outputDir = mkdir "_sxs" -force
+$outputDir = mkdir "_gen" -force
 
 $tasksToPatch = @("Bash", "CmdLine", "PowerShell")
 $taskKinds = @("Pre", "Post")
@@ -156,7 +156,7 @@ foreach ($task in $filesToPatch)
         $taskversion = "$($manifest.version.Major).$($manifest.version.Minor).$($manifest.version.Patch)"
         $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-        Copy-Item $task "_sxs\$taskzip"
+        Copy-Item $task "_gen\$taskzip"
         Push-Location _tmp
         
         & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd

@@ -79,7 +79,7 @@ $Source = @"
 
 Add-Type -TypeDefinition $Source -Language CSharp 
 
-$outputDir = mkdir "_sxs" -force
+$outputDir = mkdir "_gen" -force
 
 $tasksToPatch = get-childitem "_download/*.zip"
 
@@ -92,7 +92,7 @@ foreach ($task in $tasksToPatch)
 
     $taskDir = "_tmp"
 
-    if (Test-Path -path "_sxs\$($task.Name -replace '^([^.]+).*-','$1-sxs*')" -PathType Leaf)
+    if (Test-Path -path "_gen\$($task.Name -replace '^([^.]+).*-','$1-sxs*')" -PathType Leaf)
     {
         continue
     }
@@ -143,7 +143,7 @@ foreach ($task in $tasksToPatch)
     $taskversion = "$($manifest.version.Major).$($manifest.version.Minor).$($manifest.version.Patch)"
     $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-    Copy-Item $task "_sxs\$taskzip"
+    Copy-Item $task "_gen\$taskzip"
     Push-Location _tmp
     
     & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd

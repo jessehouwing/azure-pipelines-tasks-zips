@@ -129,14 +129,14 @@ foreach ($extension in $extensions)
                 $taskzip = $allAssets | Where-Object { $_.name -ilike "$taskName.*-$taskVersion.zip" } | Select-Object -First 1
                 if (-not $taskzip)
                 {
-                    $taskzip = dir "./_sxs/$taskName.*-$taskVersion.zip" | Select-Object -First 1
-                    $filePath = "./_sxs/$($taskzip.Name)"
+                    $taskzip = dir "./_gen/$taskName.*-$taskVersion.zip" | Select-Object -First 1
+                    $filePath = "./_gen/$($taskzip.Name)"
                 }
                 else {
-                    $filePath = "./_sxs/$($taskzip.name)"
+                    $filePath = "./_gen/$($taskzip.name)"
                     if (-not (Test-Path -PathType leaf -Path $filePath))
                     {
-                        & gh release download --repo jessehouwing/azure-pipelines-tasks-zips "m$($version.version.minor)-tasks" --pattern "$taskName.*-$taskVersion.zip" --dir ./_sxs
+                        & gh release download --repo jessehouwing/azure-pipelines-tasks-zips "m$($version.version.minor)-tasks" --pattern "$taskName.*-$taskVersion.zip" --dir ./_gen
                     }
                 }
                 
