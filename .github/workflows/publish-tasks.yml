@@ -44,7 +44,7 @@ jobs:
             foreach ($vsix in dir ./_vsix/*.vsix)
             {
                $json = (& tfx extension show --token $env:AZURE_MARKETPLACE_PAT --vsix $vsix.FullName --json) | ConvertFrom-Json
-               if (-not ($vsix.FullName.EndsWith("$($json.versions[0].version).vsix")))
+               if (-not ($json.versions -and $json.versions.count -gt 0 -and $vsix.FullName.EndsWith("$($json.versions[0].version).vsix")))
                {
                  & tfx extension publish --vsix $vsix.FullName --token $env:AZURE_MARKETPLACE_PAT
                }
