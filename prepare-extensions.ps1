@@ -145,8 +145,13 @@ foreach ($extension in $extensions)
                 $taskversions += $taskVersion
             }
 
+            # Hack to fixup contributionIds that can't be changed.
+            $contributionId = $taskName
+            $contributionId = $contributionId -replace "^(Pre|Post)-(CmdLine|PowerShell)$","`$0V2"
+            $contributionId = $contributionId -replace "^(Pre|Post)-(Bash)$","`$0V3"
+
             $extensionManifest.contributions += [ordered] @{
-                "id" = "$taskName"
+                "id" = "$contributionId"
                 "type" = "ms.vss-distributed-task.task"
                 "targets" = @("ms.vss-distributed-task.tasks")
                 "properties" = @{
