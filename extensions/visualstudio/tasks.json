@@ -1,3 +1,5 @@
 {
+    "postfixes": ["sxs"],
+    "prefixes": [],
     "tasks": ["VSBuild",  "VSTest", "VisualStudioTestPlatformInstaller",  "MSBuild"]
 }

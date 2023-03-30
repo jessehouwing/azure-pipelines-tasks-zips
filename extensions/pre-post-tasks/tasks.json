@@ -1,0 +1,5 @@
+{
+    "prefixes": ["Pre", "Post"],
+    "postfixes": [],
+    "tasks": ["PowerShell", "Bash", "CmdLine"]
+}

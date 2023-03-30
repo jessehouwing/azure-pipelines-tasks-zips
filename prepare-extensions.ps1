@@ -38,6 +38,30 @@ function get-extensiontasks
     return (get-content -raw "./extensions/$extensionId/tasks.json" | ConvertFrom-Json).tasks
 }
 
+function expand-taskprepostfixes 
+{
+    param(
+        [string] $extensionId,
+        [string] $taskname
+    )
+
+    $tasks = get-content -raw "./extensions/$extensionId/tasks.json" | ConvertFrom-Json
+
+    $result = @()
+
+    foreach ($prefix in $tasks.prefixes)
+    {
+        $result += "$prefix-$taskname"
+    }
+
+    foreach ($postfix in $tasks.postfixes)
+    {
+        $result += "$taskname-$postfix"
+    }
+
+    return $result
+}
+
 function get-versionsfortask
 {
     param(
@@ -96,28 +120,38 @@ foreach ($extension in $extensions)
     foreach ($task in $tasks)
     {
         $versions = get-versionsfortask -taskName $task
-        
-        foreach ($version in $versions)
-        {
-            $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
-            $taskzip = $allAssets | Where-Object { $_.name -ilike "$task-sxs*-$taskVersion.zip" } | Select-Object -First 1
-            $filePath = "./_sxs/$($taskzip.name)"
-            if (-not (Test-Path -PathType leaf -Path $filePath))
-            {
-                & gh release download --repo jessehouwing/azure-pipelines-tasks-zips "m$($version.version.minor)-tasks" --pattern "$task-sxs*-$taskVersion.zip" --dir ./_sxs
-            }
-            
-            Expand-Archive -Path $filePath -DestinationPath "extensions/$($extension.Name)/_tasks/$task-sxs/v$taskVersion"
-            write-output "Added: $task-sxs/v$taskVersion"
-            $taskversions += $taskVersion
-        }
 
-        $extensionManifest.contributions += [ordered] @{
-            "id" = "$task-sxs"
-            "type" = "ms.vss-distributed-task.task"
-            "targets" = @("ms.vss-distributed-task.tasks")
-            "properties" = @{
-                "name" = "_tasks/$task-sxs"
+        foreach ($taskName in expand-taskprepostfixes -extensionId $($extension.Name) -taskName $task)
+        {
+            foreach ($version in $versions)
+            {
+                $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
+                $taskzip = $allAssets | Where-Object { $_.name -ilike "$taskName.*-$taskVersion.zip" } | Select-Object -First 1
+                if (-not $taskzip)
+                {
+                    $taskzip = dir "./_sxs/$taskName.*-$taskVersion.zip" | Select-Object -First 1
+                    $filePath = "./_sxs/$($taskzip.Name)"
+                }
+                else {
+                    $filePath = "./_sxs/$($taskzip.name)"
+                    if (-not (Test-Path -PathType leaf -Path $filePath))
+                    {
+                        & gh release download --repo jessehouwing/azure-pipelines-tasks-zips "m$($version.version.minor)-tasks" --pattern "$taskName.*-$taskVersion.zip" --dir ./_sxs
+                    }
+                }
+                
+                Expand-Archive -Path $filePath -DestinationPath "extensions/$($extension.Name)/_tasks/$taskName/v$taskVersion"
+                write-output "Added: $taskName/v$taskVersion"
+                $taskversions += $taskVersion
+            }
+
+            $extensionManifest.contributions += [ordered] @{
+                "id" = "$taskName"
+                "type" = "ms.vss-distributed-task.task"
+                "targets" = @("ms.vss-distributed-task.tasks")
+                "properties" = @{
+                    "name" = "_tasks/$taskName"
+                }
             }
         }
     }
@@ -129,7 +163,7 @@ foreach ($extension in $extensions)
     $extensionManifest.version = $extensionVersion
 
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "extensions/$($extension.Name)/vss-extension.tasks.json" -Encoding utf8NoBOM
-    copy .\extensions\vss-extension.cloud.json "extensions/$($extension.Name)"
+    copy .\extensions\vss-extension.debug.json "extensions/$($extension.Name)"
     copy .\LICENSE "extensions/$($extension.Name)"
     copy .\PRIVACY.md "extensions/$($extension.Name)"
 

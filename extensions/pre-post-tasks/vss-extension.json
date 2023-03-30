@@ -1,0 +1,5 @@
+{
+  "id": "pre-post-tasks",
+  "name": "Pre and post script tasks",
+  "description": "Run scripts before a job starts or after it ends."
+}

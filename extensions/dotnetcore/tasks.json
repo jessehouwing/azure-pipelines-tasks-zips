@@ -1,3 +1,5 @@
 {
+    "postfixes": ["sxs"],
+    "prefixes": [],
     "tasks": ["DotNetCoreCLI", "UseDotNet"]
 }

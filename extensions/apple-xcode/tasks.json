@@ -1,3 +1,5 @@
 {
+    "postfixes": ["sxs"],
+    "prefixes": [],
     "tasks": ["InstallAppleCertificate", "InstallAppleProvisioningProfile", "Xcode"]
 }

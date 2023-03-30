@@ -79,7 +79,7 @@ $Source = @"
 
 Add-Type -TypeDefinition $Source -Language CSharp 
 
-$outputDir = mkdir "_prepost" -force
+$outputDir = mkdir "_sxs" -force
 
 $tasksToPatch = @("Bash", "CmdLine", "PowerShell")
 $taskKinds = @("Pre", "Post")
@@ -100,11 +100,6 @@ foreach ($task in $filesToPatch)
         }
 
         $taskDir = "_tmp"
-        
-        if (Test-Path -path "_prepost\$($task.Name -replace '^([^.]+).*-', "$kind-$1*")" -PathType Leaf)
-        {
-            continue
-        }
 
         # Expand-Archive -Path $task -DestinationPath _tmp
         & "C:\Program Files\7-Zip\7z.exe" x $task -o_tmp task*.json *.resjson -r -bd
@@ -156,7 +151,7 @@ foreach ($task in $filesToPatch)
         $taskversion = "$($manifest.version.Major).$($manifest.version.Minor).$($manifest.version.Patch)"
         $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-        Copy-Item $task "_prepost\$taskzip"
+        Copy-Item $task "_sxs\$taskzip"
         Push-Location _tmp
         
         & "C:\Program Files\7-Zip\7z.exe" u "$outputDir\$taskzip" "*" -r -bd
