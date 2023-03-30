@@ -134,7 +134,7 @@ foreach ($extension in $extensions)
     copy .\PRIVACY.md "extensions/$($extension.Name)"
 
     pushd "extensions/$($extension.Name)"
-    & tfx extension create --extension-id "$($extension.Name)" --manifests "vss-extension.json" "vss-extension.onprem.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-$extensionVersion.vsix"
-    & tfx extension create --extension-id "$($extension.Name)-debug" --manifests "vss-extension.json" "vss-extension.cloud.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
+    & tfx extension create --extension-id "$($extension.Name)" --manifests "vss-extension.json" "vss-extension.public.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-$extensionVersion.vsix"
+    & tfx extension create --extension-id "$($extension.Name)-debug" --manifests "vss-extension.json" "vss-extension.debug.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
     popd
 }
