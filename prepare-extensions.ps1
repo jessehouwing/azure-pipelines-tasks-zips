@@ -160,7 +160,19 @@ foreach ($extension in $extensions)
             }
         }
     }
+
+    # fix-up paths and files
     
+    Get-ChildItem -Recurse -Filter "#" -Path "extensions/$($extension.Name)/_tasks/" | %{ 
+        $_ | Rename-Item -NewName { $_.Name -replace "#", "_hash_" }
+
+        $indexjs = $_.Parent.FullName + "/index.js"
+        if (Test-Path -PathType Leaf -Path $indexjs)
+        {
+            (gc -raw $indexjs) -replace "\./#","./_hash_" | set-content $indexjs
+        }
+    }
+
     Get-ChildItem -Recurse -Filter "* *" -Path "extensions/$($extension.Name)/_tasks/" | Rename-Item -NewName { $_.Name -replace " ", "_" }
     $extensionVersion = calculate-version -versions $taskversions
 
