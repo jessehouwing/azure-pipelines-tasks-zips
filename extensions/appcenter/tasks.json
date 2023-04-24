@@ -1,5 +1,5 @@
 {
     "postfixes": ["sxs"],
     "prefixes": [],
-    "tasks": ["AppCenterDistribute", "AppCenterTuest"]
+    "tasks": ["AppCenterDistribute", "AppCenterTest"]
 }
