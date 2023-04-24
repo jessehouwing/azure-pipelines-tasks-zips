@@ -1,0 +1,1 @@
+Get-ChildItem -Recurse -Filter "* *" -Path "./_tasks/" | Rename-Item -NewName { $_.Name -replace " ", "_" }

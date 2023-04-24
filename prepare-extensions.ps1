@@ -162,30 +162,24 @@ foreach ($extension in $extensions)
     }
 
     # fix-up paths and files
-    
-    Get-ChildItem -Recurse -Filter "#" -Path "extensions/$($extension.Name)/_tasks/" | %{ 
-        $_ | Rename-Item -NewName { $_.Name -replace "#", "_hash_" }
-
-        $indexjs = $_.Parent.FullName + "/index.js"
-        if (Test-Path -PathType Leaf -Path $indexjs)
-        {
-            (gc -raw $indexjs) -replace "\./#","./_hash_" | set-content $indexjs
-        }
+    if (test-path -PathType Leaf -path "extensions/$($extension.Name)/fix.ps1")
+    {
+        Push-Location "extensions/$($extension.Name)"
+        & .\fix.ps1
+        Pop-Location
     }
 
-    Get-ChildItem -Recurse -Filter "* *" -Path "extensions/$($extension.Name)/_tasks/" | Rename-Item -NewName { $_.Name -replace " ", "_" }
     $extensionVersion = calculate-version -versions $taskversions
 
-    [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding    
     $extensionManifest.version = $extensionVersion
 
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "extensions/$($extension.Name)/vss-extension.tasks.json" -Encoding utf8NoBOM
-    copy .\extensions\vss-extension.debug.json "extensions/$($extension.Name)"
-    copy .\LICENSE "extensions/$($extension.Name)"
-    copy .\PRIVACY.md "extensions/$($extension.Name)"
+    Copy-Item .\extensions\vss-extension.debug.json "extensions/$($extension.Name)"
+    Copy-Item .\LICENSE "extensions/$($extension.Name)"
+    Copy-Item .\PRIVACY.md "extensions/$($extension.Name)"
 
-    pushd "extensions/$($extension.Name)"
+    Push-Location "extensions/$($extension.Name)"
     & tfx extension create --extension-id "$($extension.Name)" --manifests "vss-extension.json" "vss-extension.public.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-$extensionVersion.vsix"
     & tfx extension create --extension-id "$($extension.Name)-debug" --manifests "vss-extension.json" "vss-extension.debug.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
-    popd
+    Pop-Location
 }
