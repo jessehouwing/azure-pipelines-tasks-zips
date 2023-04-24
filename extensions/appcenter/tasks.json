@@ -1,0 +1,5 @@
+{
+    "postfixes": ["sxs"],
+    "prefixes": [],
+    "tasks": ["AppCenterDistribute", "AppCenterTuest"]
+}

@@ -1,0 +1,9 @@
+{
+  "targets": [
+    {
+      "id": "Microsoft.TeamFoundation.Server",
+      "version": "[16.0, 20.0)"
+    }
+  ],
+  "public": false
+}
