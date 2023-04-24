@@ -5,5 +5,8 @@
       "version": "[16.0, 20.0)"
     }
   ],
-  "public": false
+  "public": true,
+  "galleryFlags": [
+    "Preview"
+  ] 
 }
