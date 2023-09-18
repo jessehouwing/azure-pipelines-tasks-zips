@@ -43,6 +43,13 @@
     "type": "git",
     "uri": "https://github.com/jessehouwing/azure-pipelines-tasks-zips"
   },
+  "badges": [
+    {
+      "href": "https://github.com/sponsors/jessehouwing",
+      "uri": "https://img.shields.io/github/sponsors/jessehouwing",
+      "description": "GitHub Sponsors"
+    }
+  ],
   "branding": {
     "color": "rgb(36, 43, 50)",
     "theme": "dark"
