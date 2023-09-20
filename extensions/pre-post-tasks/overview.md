@@ -1,6 +1,6 @@
 # Pre and Post job script tasks
 
-This extension contains patched versions of the "BashV3", "CmdLineV2" and "PowerShellV2" tasks. They are built from the latest release/mXXX branch of the [azure-pipelines-tasks](https://github.com/Microsoft/azure-pipelines-tasks) repository.
+This extension contains patched versions of the "BashV3", "CmdLineV2" and "PowerShellV2" tasks. They are built from the latets release that was installed into my Azure DevOps Account.
 
 Each task is extended with a Pre-Job version and a Post-Job version.
 
