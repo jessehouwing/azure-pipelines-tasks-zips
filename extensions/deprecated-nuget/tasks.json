@@ -1,0 +1,5 @@
+{
+    "prefixes": [],
+    "postfixes": ["deprecated"],
+    "tasks": ["NuGetRestore", "NuGetInstaller"]
+}
