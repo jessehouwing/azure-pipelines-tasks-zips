@@ -1,5 +1,5 @@
 {
   "id": "nuget-deprecated",
-  "name": "NuGet",
+  "name": "NuGet (deprecated)",
   "description": "Nuget tasks that were removed from Azure DevOps"
 }
