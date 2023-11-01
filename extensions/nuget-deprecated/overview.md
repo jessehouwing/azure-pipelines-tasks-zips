@@ -2,7 +2,7 @@
 
 > ⚠️ It's highly recommended to migrate your existing pipelines to the newer `NuGetCommand@2` tasks. This extension is provided purely for backwards compatibility.
 
-This extension contains the last versions of the `NuGetInstaller` and `NuGetRestore` tasks which will be removed on 23rd of November 2023.
+This extension contains the last versions of the `NuGetInstaller` and `NuGetRestore` tasks which will be removed on 27th of November 2023.
 
 These tasks are installed side-by-side the original tasks
 
