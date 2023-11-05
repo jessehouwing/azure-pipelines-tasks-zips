@@ -10,7 +10,6 @@ $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=tr
 
 $taskMetadatas = $tasks.value
 
-
 [string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
 $allAssets = @()
 foreach ($release in $existingReleases)
@@ -18,7 +17,6 @@ foreach ($release in $existingReleases)
     $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
     $allAssets = $allAssets + $releaseDetails.assets
 }
-
 
 $taskMetadatas | ForEach-Object -Parallel {
     $url = $using:url
