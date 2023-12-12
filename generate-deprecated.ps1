@@ -81,7 +81,7 @@ Add-Type -TypeDefinition $Source -Language CSharp
 
 $outputDir = mkdir "_gen" -force
 
-$tasksToPatch = @("NuGetRestore", "NuGetInstaller")
+$tasksToPatch = @("NuGetRestore", "NuGetInstaller", "NuGetAuthenticate", "NuGetPackager", "Nuget", "NuGetPackager")
 $taskKinds = @("deprecated")
 
 $filesToPatch = @()
