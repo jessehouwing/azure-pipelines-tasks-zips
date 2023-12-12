@@ -1,5 +1,5 @@
 {
     "prefixes": [],
     "postfixes": ["deprecated"],
-    "tasks": ["NuGetRestore", "NuGetInstaller"]
+    "tasks": ["NuGetRestore", "NuGetInstaller", "NuGetAuthenticate", "NuGetPackager", "Nuget", "NuGetPackager"]
 }
