@@ -31,7 +31,7 @@ $taskMetadatas | ForEach-Object -Parallel {
         $taskversion = "$($taskMetadata.version.major).$($taskMetadata.version.minor).$($taskMetadata.version.patch)"
         $taskZip = "$taskName.$taskid-$taskversion.zip"
 
-        if (($_.name -like "nuget*") -or (-not (
+        if ((-not (
                 (Test-Path -PathType Leaf -Path "$outputDir/$taskZip") -or
                 (($using:allAssets | Where-Object { $_.name -eq $taskZip }).Count -gt 0) -or 
                 ($taskMetadata.version.minor -lt 100)
