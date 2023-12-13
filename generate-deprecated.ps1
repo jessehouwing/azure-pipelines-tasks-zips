@@ -2,7 +2,7 @@ $ErrorActionPreference="Stop"
 
 $outputDir = mkdir "_gen" -force
 
-$tasksToPatch = @("NuGetRestore", "NuGetInstaller", "NuGetAuthenticate", "NuGetPackager", "Nuget", "NuGetPublisher")
+$tasksToPatch = @("NuGetRestore", "NuGetInstaller", "NuGetAuthenticate", "NuGetPackager", "NuGet", "NuGetPublisher")
 $taskKinds = @("deprecated")
 
 $filesToPatch = @()
