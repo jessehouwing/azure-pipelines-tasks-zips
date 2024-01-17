@@ -50,3 +50,23 @@ You may need to force Azure DevOps Server to not downgrade back to its preferred
 ```
 AZP_AGENT_DOWNGRADE_DISABLED=true
 ```
+
+# Maximum extension size
+For on-premise installations there is a maximum extension size configured for the internal marketplace. Some of the extension might not meet the configured maximum. If this is the case you'll receive an error message similar to the following:
+
+```
+Upload Error
+
+The extension package size '38060652 bytes' exceeds the maximum package size '26214400 bytes'
+```
+
+To work around this issue, you can [use the installation method that pushes the task-zips directlty](#installation) or incease the configured maximum by running the following SQL statement against your Azure DevOps Server Configuration database using a size that is bigger than the one reported in the error message:
+
+```sql
+DECLARE @keyvalues dbo.typ_keyvaluepairstringtablenullable;
+
+INSERT @keyvalues
+VALUES ('#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\', '40') 
+
+exec prc_UpdateRegistry 1, @keyvalues
+```
