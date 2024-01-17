@@ -62,7 +62,7 @@ The extension package size '38060652 bytes' exceeds the maximum package size '26
 
 To work around this issue, you can [use the installation method that pushes the task-zips directlty](#installation) or incease the configured maximum by running the following SQL statement against your Azure DevOps Server Configuration database using a size that is bigger than the one reported in the error message:
 
-```sql
+```
 DECLARE @keyvalues dbo.typ_keyvaluepairstringtablenullable;
 
 INSERT @keyvalues
