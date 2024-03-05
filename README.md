@@ -52,7 +52,8 @@ AZP_AGENT_DOWNGRADE_DISABLED=true
 ```
 
 # Maximum extension size
-For on-premise installations there is a maximum extension size configured for the internal marketplace. Some of the extension might not meet the configured maximum. If this is the case you'll receive an error message similar to the following:
+
+For on-premise installations there is a maximum extension size configured for the internal marketplace. Some of the extensions might not meet the configured maximum. If this is the case you'll receive an error message similar to the following:
 
 ```
 Upload Error
@@ -60,7 +61,7 @@ Upload Error
 The extension package size '38060652 bytes' exceeds the maximum package size '26214400 bytes'
 ```
 
-To work around this issue, you can [use the installation method that pushes the task-zips directlty](#installation) or incease the configured maximum by running the following SQL statement against your Azure DevOps Server Configuration database using a size that is bigger than the one reported in the error message:
+To work around this issue, you can [use the installation method that pushes the task-zips directly](#installation) or increase the configured maximum by running the following SQL statement against your Azure DevOps Server Configuration database using a size that is bigger than the one reported in the error message:
 
 ```
 DECLARE @keyvalues dbo.typ_keyvaluepairstringtablenullable;
