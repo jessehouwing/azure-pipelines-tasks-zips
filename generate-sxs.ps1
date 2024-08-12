@@ -44,12 +44,19 @@ foreach ($task in $tasksToPatch)
                     $resourceFiles = Get-ChildItem "$taskDir\Strings\resources.resjson\resources.resjson" -recurse -ErrorAction "Continue"
                     foreach ($resourceFile in $resourceFiles)
                     {
-                        $resources = (Get-Content $resourceFile -raw) | ConvertFrom-Json -AsHashtable
+                        try {
+                            $resources = (Get-Content $resourceFile -raw) | ConvertFrom-Json -AsHashtable
+                        }
+                        catch {
+                            # allow for manual intervention.
+                            $resources = (Get-Content $resourceFile -raw) | ConvertFrom-Json -AsHashtable
+                        }
                         if ($resources["loc.friendlyName"])
                         {
                             $resources["loc.friendlyName"] = $manifest.friendlyName
                         }
-                        $resources | ConvertTo-Json -depth 100 | Out-File $resourceFile -Encoding utf8NoBOM
+                        $resources | ConvertTo-Json -depth 100 | Out-File $resourceFile -Encoding utf8NoBOM                                
+
                     }
                 }
             }
