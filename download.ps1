@@ -12,14 +12,12 @@ $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=tr
 $taskMetadatas = $tasks.value
 
 write-output "::notice::Fetching all releases from GitHub"
-if ($existingReleases -eq $null) {
-    [string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
-    $allAssets = @()
-    foreach ($release in $existingReleases)
-    {
-        $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
-        $allAssets = $allAssets + $releaseDetails.assets
-    }
+[string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
+$allAssets = @()
+foreach ($release in $existingReleases)
+{
+    $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
+    $allAssets = $allAssets + $releaseDetails.assets
 }
 
 $taskMetadatas | ForEach-Object -Parallel {
@@ -50,6 +48,14 @@ $taskMetadatas | ForEach-Object -Parallel {
                 {
                     write-output "::notice::Downloading: $taskZip"
                     Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
+
+                    write-output "::notice::Verifying: $taskZip"
+                    & "C:\Program Files\7-Zip\7z.exe" x "$outputDir/$taskZip"
+                    if ($LASTEXITCODE -ne 0)
+                    {
+                        throw "Failed to extract $taskZip"
+                    }
+
                     $success = $true
                 }
                 catch
