@@ -6,16 +6,20 @@ $pat = $env:AZURE_DEVOPS_PAT
 $url = "https://dev.azure.com/$org"
 $header = @{authorization = "Basic $([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(".:$pat")))"}
 
+write-output "::notice::Fetching all tasks from $org"
 $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=true" -Method Get -ContentType "application/json" -Headers $header | ConvertFrom-Json -AsHashtable
 
 $taskMetadatas = $tasks.value
 
-[string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
-$allAssets = @()
-foreach ($release in $existingReleases)
-{
-    $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
-    $allAssets = $allAssets + $releaseDetails.assets
+write-output "::notice::Fetching all releases from GitHub"
+if ($existingReleases -eq $null) {
+    [string[]] $existingReleases = & gh release list --repo jessehouwing/azure-pipelines-tasks-zips --limit 500 | Select-String "m\d+-tasks" | %{ $_.Matches.Value }
+    $allAssets = @()
+    foreach ($release in $existingReleases)
+    {
+        $releaseDetails = & gh release view --repo jessehouwing/azure-pipelines-tasks-zips $release --json name,tagName,assets | ConvertFrom-Json
+        $allAssets = $allAssets + $releaseDetails.assets
+    }
 }
 
 $taskMetadatas | ForEach-Object -Parallel {
@@ -38,9 +42,34 @@ $taskMetadatas | ForEach-Object -Parallel {
             ) )
         )
         {
-            Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
+            $success = $false
+            $retry = 5
+            while ((-not $success) -and ($retry -gt 0)) 
+            {
+                try
+                {
+                    write-output "::notice::Downloading: $taskZip"
+                    Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
+                    $success = $true
+                }
+                catch
+                {
+                    $retry--
+                    remove-item -path "$outputDir/$taskZip" -force -erroraction silentlycontinue
+                    if ($retry -eq 0)
+                    {
+                        write-output "::error::Failed to download $taskZip"
+                    }
+                    else
+                    {
+                        write-output "::warning::Failed to download $taskZip, retrying"
+                    }
+                }
+            }
             write-output "::notice::Downloaded: $taskZip"
-        } else {
+        } 
+        else 
+        {
             write-output "::debug::Already have: $taskZip"
         }
     }
