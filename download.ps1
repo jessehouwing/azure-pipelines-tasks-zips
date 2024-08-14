@@ -50,10 +50,10 @@ $taskMetadatas | ForEach-Object -Parallel {
                     Invoke-WebRequest -Uri "$url/_apis/distributedtask/tasks/$taskid/$taskversion" -OutFile "$outputDir/$taskZip" -Headers $header
 
                     write-output "::notice::Verifying: $taskZip"
-                    & "C:\Program Files\7-Zip\7z.exe" x "$outputDir/$taskZip"
+                    & "C:\Program Files\7-Zip\7z.exe" t "$outputDir/$taskZip"
                     if ($LASTEXITCODE -ne 0)
                     {
-                        throw "Failed to extract $taskZip"
+                        throw "Failed test failed for: $taskZip"
                     }
 
                     $success = $true
