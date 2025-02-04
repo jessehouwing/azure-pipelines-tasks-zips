@@ -16,7 +16,7 @@ $tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=tr
 
 $taskMetadata = $tasks.value
 
-& npm install tfx-cli@latest -g --silent --no-progress
+& npm install tfx-cli@^0.18 -g --silent --no-progress
 
 if (Test-Path "_vsix")
 {
