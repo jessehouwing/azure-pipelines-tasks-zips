@@ -41,7 +41,7 @@ jobs:
       - run: |
           if (test-path -PathType Leaf ./_vsix/*.vsix)
           {
-            & npm install tfx-cli@latest --location=global --no-fund
+            & npm install tfx-cli@0.18 --location=global --no-fund
             foreach ($vsix in dir ./_vsix/*.vsix)
             {
                $json = (& tfx extension show --token $env:AZURE_MARKETPLACE_PAT --vsix $vsix.FullName --json) | ConvertFrom-Json
