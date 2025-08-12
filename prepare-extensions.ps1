@@ -147,20 +147,75 @@ function should-skip-extension-creation
     return $false
 }
 
+function calculate-extension-version-metadata-only
+{
+    param(
+        [string] $extensionId
+    )
+
+    $tasks = get-extensiontasks -extensionId $extensionId
+    if ($tasks.Count -eq 0)
+    {
+        return $null
+    }
+
+    $taskversions = @()
+    foreach ($task in $tasks)
+    {
+        $versions = get-versionsfortask -taskName $task
+
+        foreach ($taskName in expand-taskprepostfixes -extensionId $extensionId -taskName $task)
+        {
+            foreach ($version in $versions)
+            {
+                $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
+                $taskversions += $taskVersion
+            }
+        }
+    }
+
+    if ($taskversions.Count -eq 0) {
+        return $null
+    }
+
+    return calculate-version -versions $taskversions
+}
+
 $extensions = get-extensions
 foreach ($extension in $extensions)
 {
-    Remove-Item -Recurse "extensions/$($extension.Name)/_tasks" -Force -ErrorAction SilentlyContinue
     $tasks = get-extensiontasks -extensionId $extension.Name
     if ($tasks.Count -eq 0)
     {
+        Write-Output "Extension $($extension.Name) has no tasks, skipping"
         continue
     }
+
+    # Calculate extension version early using only metadata
+    $extensionVersion = calculate-extension-version-metadata-only -extensionId $extension.Name
+    
+    if (-not $extensionVersion) {
+        Write-Output "Could not calculate version for extension $($extension.Name), skipping"
+        continue
+    }
+
+    # Check marketplace versions early to avoid unnecessary work
+    $skipMainExtension = should-skip-extension-creation -extensionId "$($extension.Name)" -extensionVersion $extensionVersion
+    $skipDebugExtension = should-skip-extension-creation -extensionId "$($extension.Name)-debug" -extensionVersion $extensionVersion
+    
+    if ($skipMainExtension -and $skipDebugExtension) {
+        Write-Output "Both main and debug versions of extension $($extension.Name) v$extensionVersion already exist in marketplace, skipping entirely"
+        continue
+    }
+
+    Write-Output "Processing extension $($extension.Name) v$extensionVersion"
+    
+    # Only now proceed with downloading, extracting, and building
+    Remove-Item -Recurse "extensions/$($extension.Name)/_tasks" -Force -ErrorAction SilentlyContinue
 
     $extensionManifest = ConvertFrom-Json -InputObject (get-content -raw "./extensions/vss-extension.json") 
     $extensionManifest.contributions = @()
     
-    $taskversions = @()
     foreach ($task in $tasks)
     {
         $versions = get-versionsfortask -taskName $task
@@ -186,7 +241,6 @@ foreach ($extension in $extensions)
                 
                 Expand-Archive -Path $filePath -DestinationPath "extensions/$($extension.Name)/_tasks/$taskName/v$taskVersion"
                 write-output "Added: $taskName/v$taskVersion"
-                $taskversions += $taskVersion
             }
 
             # Hack to fixup contributionIds that can't be changed.
@@ -213,8 +267,6 @@ foreach ($extension in $extensions)
         Pop-Location
     }
 
-    $extensionVersion = calculate-version -versions $taskversions
-
     $extensionManifest.version = $extensionVersion
 
     $extensionManifest | ConvertTo-Json -depth 100 | Out-File "extensions/$($extension.Name)/vss-extension.tasks.json" -Encoding utf8NoBOM
@@ -223,10 +275,6 @@ foreach ($extension in $extensions)
     Copy-Item .\PRIVACY.md "extensions/$($extension.Name)"
 
     Push-Location "extensions/$($extension.Name)"
-    
-    # Check if extension creation can be skipped due to existing marketplace version
-    $skipMainExtension = should-skip-extension-creation -extensionId "$($extension.Name)" -extensionVersion $extensionVersion
-    $skipDebugExtension = should-skip-extension-creation -extensionId "$($extension.Name)-debug" -extensionVersion $extensionVersion
     
     if (-not $skipMainExtension) {
         Write-Output "Creating main extension: jessehouwing.$($extension.Name)-$extensionVersion.vsix"
