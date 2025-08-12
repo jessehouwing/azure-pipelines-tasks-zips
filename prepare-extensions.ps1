@@ -111,9 +111,9 @@ function get-marketplace-version
     )
 
     try {
-        $json = & tfx extension show --publisher $publisher --extension-id $extensionId --json | ConvertFrom-Json
+        $json = & tfx extension show --publisher $publisher --extension-id $extensionId --json --token $env:AZURE_DEVOPS_PAT | ConvertFrom-Json
         if ($json.versions -and $json.versions.Count -gt 0) {
-            return $json.versions[0].version
+            return $json.versions.version | sort-object { [version]"$_" } | select-object -last 1
         }
     }
     catch {
@@ -133,7 +133,7 @@ function should-skip-extension-creation
 
     $marketplaceVersion = get-marketplace-version -extensionId $extensionId -publisher $publisher
     
-    if ($marketplaceVersion -and $marketplaceVersion -eq $extensionVersion) {
+    if ($marketplaceVersion -and ($marketplaceVersion -eq $extensionVersion)) {
         Write-Output "Extension $publisher.$extensionId version $extensionVersion already exists in marketplace, skipping creation"
         return $true
     }
@@ -165,8 +165,27 @@ foreach ($extension in $extensions)
     {
         $versions = get-versionsfortask -taskName $task
 
+        foreach ($version in $versions)
+        {
+            $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
+            $taskversions += $taskVersion
+        }
+    }
+    $extensionVersion = calculate-version -versions $taskversions
+    $skipMainExtension = should-skip-extension-creation -extensionId "$($extension.Name)" -extensionVersion $extensionVersion
+    $skipDebugExtension = should-skip-extension-creation -extensionId "$($extension.Name)-debug" -extensionVersion $extensionVersion
+
+    if ($skipMainExtension -and $skipDebugExtension) {
+        Write-Output "Both main and debug extensions for $($extension.Name) are up to date, skipping creation"
+        continue
+    }
+
+    foreach ($task in $tasks)
+    {
         foreach ($taskName in expand-taskprepostfixes -extensionId $($extension.Name) -taskName $task)
         {
+            $versions = get-versionsfortask -taskName $task
+
             foreach ($version in $versions)
             {
                 $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
@@ -186,7 +205,6 @@ foreach ($extension in $extensions)
                 
                 Expand-Archive -Path $filePath -DestinationPath "extensions/$($extension.Name)/_tasks/$taskName/v$taskVersion"
                 write-output "Added: $taskName/v$taskVersion"
-                $taskversions += $taskVersion
             }
 
             # Hack to fixup contributionIds that can't be changed.
@@ -223,10 +241,6 @@ foreach ($extension in $extensions)
     Copy-Item .\PRIVACY.md "extensions/$($extension.Name)"
 
     Push-Location "extensions/$($extension.Name)"
-    
-    # Check if extension creation can be skipped due to existing marketplace version
-    $skipMainExtension = should-skip-extension-creation -extensionId "$($extension.Name)" -extensionVersion $extensionVersion
-    $skipDebugExtension = should-skip-extension-creation -extensionId "$($extension.Name)-debug" -extensionVersion $extensionVersion
     
     if (-not $skipMainExtension) {
         Write-Output "Creating main extension: jessehouwing.$($extension.Name)-$extensionVersion.vsix"
