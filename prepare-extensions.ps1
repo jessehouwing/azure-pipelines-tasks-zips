@@ -22,7 +22,7 @@ if (Test-Path "_vsix")
 {
     Remove-Item "_vsix" -force -Recurse | Out-Null
 }
-mkdir _vsix | Out-Null
+New-Item -ItemType Directory -Path "_vsix" -Force | Out-Null
 
 function get-extensions 
 {
