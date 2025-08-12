@@ -103,6 +103,50 @@ function calculate-version
     return "$maxminorversion.$maxbuildversion.$count"
 }
 
+function get-marketplace-version
+{
+    param(
+        [string] $extensionId,
+        [string] $publisher = "jessehouwing"
+    )
+
+    try {
+        $json = & tfx extension show --publisher $publisher --extension-id $extensionId --json | ConvertFrom-Json
+        if ($json.versions -and $json.versions.Count -gt 0) {
+            return $json.versions[0].version
+        }
+    }
+    catch {
+        Write-Output "Could not retrieve marketplace version for $publisher.$extensionId (may not exist or network issue)"
+    }
+    
+    return $null
+}
+
+function should-skip-extension-creation
+{
+    param(
+        [string] $extensionId,
+        [string] $extensionVersion,
+        [string] $publisher = "jessehouwing"
+    )
+
+    $marketplaceVersion = get-marketplace-version -extensionId $extensionId -publisher $publisher
+    
+    if ($marketplaceVersion -and $marketplaceVersion -eq $extensionVersion) {
+        Write-Output "Extension $publisher.$extensionId version $extensionVersion already exists in marketplace, skipping creation"
+        return $true
+    }
+    
+    if ($marketplaceVersion) {
+        Write-Output "Extension $publisher.$extensionId marketplace version: $marketplaceVersion, building version: $extensionVersion"
+    } else {
+        Write-Output "Extension $publisher.$extensionId not found in marketplace or network issue, proceeding with creation"
+    }
+    
+    return $false
+}
+
 $extensions = get-extensions
 foreach ($extension in $extensions)
 {
@@ -179,7 +223,20 @@ foreach ($extension in $extensions)
     Copy-Item .\PRIVACY.md "extensions/$($extension.Name)"
 
     Push-Location "extensions/$($extension.Name)"
-    & tfx extension create --extension-id "$($extension.Name)" --manifests "vss-extension.json" "vss-extension.public.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-$extensionVersion.vsix"
-    & tfx extension create --extension-id "$($extension.Name)-debug" --manifests "vss-extension.json" "vss-extension.debug.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
+    
+    # Check if extension creation can be skipped due to existing marketplace version
+    $skipMainExtension = should-skip-extension-creation -extensionId "$($extension.Name)" -extensionVersion $extensionVersion
+    $skipDebugExtension = should-skip-extension-creation -extensionId "$($extension.Name)-debug" -extensionVersion $extensionVersion
+    
+    if (-not $skipMainExtension) {
+        Write-Output "Creating main extension: jessehouwing.$($extension.Name)-$extensionVersion.vsix"
+        & tfx extension create --extension-id "$($extension.Name)" --manifests "vss-extension.json" "vss-extension.public.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-$extensionVersion.vsix"
+    }
+    
+    if (-not $skipDebugExtension) {
+        Write-Output "Creating debug extension: jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
+        & tfx extension create --extension-id "$($extension.Name)-debug" --manifests "vss-extension.json" "vss-extension.debug.json" "vss-extension.tasks.json" --output-path "..\..\_vsix\_jessehouwing.$($extension.Name)-debug-$extensionVersion.vsix"
+    }
+    
     Pop-Location
 }
