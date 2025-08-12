@@ -11,7 +11,7 @@ Install these tools in order before attempting to build:
 - `pwsh` (PowerShell Core 7.4+) - REQUIRED for all build scripts
 - `7z` (7-zip) - REQUIRED for task zip manipulation: `apt-get install p7zip-full`  
 - `npm` and `node` (Node 20+) - REQUIRED for tfx-cli: Install via NodeSource or package manager
-- `tfx-cli` - REQUIRED for extension creation: `npm install -g tfx-cli@0.18`
+- `tfx-cli` - REQUIRED for extension creation: `npm install -g tfx-cli@0.21.3`
 - `gh` (GitHub CLI) - REQUIRED for release operations: Install via package manager
 
 ### Environment Variables
@@ -77,7 +77,7 @@ After making changes, always validate these scenarios:
 pwsh --version                    # Should be 7.4+
 7z                               # Should show 7-zip help
 npm --version && node --version  # Should show versions  
-tfx --version                    # Should show TFS CLI v0.18+
+tfx --version                    # Should show TFS CLI v0.21.3+
 gh --version                     # Should show GitHub CLI version
 
 # Test UUID generation
@@ -155,7 +155,7 @@ tfx build tasks upload --task-zip-path Task.guid-version.zip --service-url https
 ### Common Build Failures
 - **"mkdir: invalid option"** on Linux: Use `New-Item -ItemType Directory -Force` instead of `mkdir -force`
 - **"7z command not found"**: Install with `apt-get install p7zip-full` (Linux) or install 7-Zip (Windows)
-- **"tfx command not found"**: Install with `npm install -g tfx-cli@0.18`
+- **"tfx command not found"**: Install with `npm install -g tfx-cli@0.21.3`
 - **HTTP 401 errors during download**: Check `AZURE_DEVOPS_PAT` environment variable
 - **GitHub API errors**: Check `GITHUB_TOKEN` environment variable
 - **Extension creation failures**: Verify task.json has required fields like `instanceNameFormat`
