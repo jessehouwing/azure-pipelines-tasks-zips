@@ -7,7 +7,7 @@
 
 # Check if we can skip extension preparation
 Write-Output "::group::Checking marketplace versions"
-. .\calculate-versions.ps1
+& .\calculate-versions.ps1
 $shouldSkipExtensions = $LASTEXITCODE -eq 0
 Write-Output "::endgroup::"
 

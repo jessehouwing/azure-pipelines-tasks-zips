@@ -33,29 +33,7 @@ function get-extensiontasks
     return (get-content -raw "./extensions/$extensionId/tasks.json" | ConvertFrom-Json).tasks
 }
 
-function expand-taskprepostfixes 
-{
-    param(
-        [string] $extensionId,
-        [string] $taskname
-    )
 
-    $tasks = get-content -raw "./extensions/$extensionId/tasks.json" | ConvertFrom-Json
-
-    $result = @()
-
-    foreach ($prefix in $tasks.prefixes)
-    {
-        $result += "$prefix-$taskname"
-    }
-
-    foreach ($postfix in $tasks.postfixes)
-    {
-        $result += "$taskname-$postfix"
-    }
-
-    return $result
-}
 
 function get-versionsfortask
 {
