@@ -135,13 +135,10 @@ function calculate-extension-version-without-downloads
     {
         $versions = get-versionsfortask -taskName $task
 
-        foreach ($taskName in expand-taskprepostfixes -extensionId $extensionId -taskName $task)
+        foreach ($version in $versions)
         {
-            foreach ($version in $versions)
-            {
-                $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
-                $taskversions += $taskVersion
-            }
+            $taskVersion = "$($version.version.major).$($version.version.minor).$($version.version.patch)"
+            $taskversions += $taskVersion
         }
     }
 
