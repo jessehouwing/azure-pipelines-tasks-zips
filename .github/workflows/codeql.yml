@@ -19,6 +19,9 @@ on:
   schedule:
     - cron: '20 19 * * 1'
 
+# Reject all permissions by default
+permissions: {}
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})

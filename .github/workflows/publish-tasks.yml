@@ -8,12 +8,20 @@ on:
   schedule:
     - cron: "22 2 * * *"
 
+# Reject all permissions by default
+permissions: {}
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on: windows-latest
+
+    # Permissions required for this job
+    permissions:
+      contents: write      # Read repository contents and create/update releases and their assets
+      actions: read        # Read actions for GitHub CLI operations
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
