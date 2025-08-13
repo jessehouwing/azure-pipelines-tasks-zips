@@ -1,0 +1,2 @@
+Get-ChildItem -path "_tasks/VSTest-sxs/v*/node_modules/tunnel/test/keys/*.pem" -recurse | Remove-Item
+Get-ChildItem -path "_tasks/VSTest-sxs/v*/node_modules/http-signature/http_signing.md" -recurse | Remove-Item
