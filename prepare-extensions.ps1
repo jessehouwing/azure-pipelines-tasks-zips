@@ -9,6 +9,7 @@ foreach ($release in $existingReleases)
 $org = "jessehouwing-brazil"
 $pat = $env:AZURE_DEVOPS_PAT
 
+
 $url = "https://dev.azure.com/$org"
 $header = @{authorization = "Basic $([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(".:$pat")))"}
 
@@ -133,7 +134,7 @@ function should-skip-extension-creation
 
     $marketplaceVersion = get-marketplace-version -extensionId $extensionId -publisher $publisher
     
-    if ($marketplaceVersion -and ($marketplaceVersion -eq $extensionVersion)) {
+    if ($marketplaceVersion -and ([version]$marketplaceVersion -ge [version]$extensionVersion)) {
         Write-Host  "Extension $publisher.$extensionId version $extensionVersion already exists in marketplace, skipping creation"
         return $true
     }
