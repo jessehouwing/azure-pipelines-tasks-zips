@@ -49,7 +49,7 @@ jobs:
       - run: |
           if (test-path -PathType Leaf ./_vsix/*.vsix)
           {
-            & npm install tfx-cli@0.21.3 --location=global --no-fund
+            & npm install tfx-cli@^0.22 --location=global --no-fund
             $anyFailures = $false
             foreach ($vsix in dir ./_vsix/*.vsix)
             {
