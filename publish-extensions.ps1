@@ -34,12 +34,9 @@ if (test-path -PathType Leaf ./_vsix/*.vsix) {
         } while ($status.status -eq "pending")
 
         if ($status.status -ne "success") {
-            $anyFailures = $true
-        }
-        else
-        {
             Write-Output "::error::Extension validation failed for extension $($vsix.Name)"
-            write-output $status.message
+            write-output $status.message.message
+            $anyFailures = $true
         }
         Write-Output "::endgroup::"
     }
