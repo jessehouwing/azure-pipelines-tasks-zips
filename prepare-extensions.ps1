@@ -117,7 +117,7 @@ function get-marketplace-version
         }
     }
     catch {
-        Write-Output "Could not retrieve marketplace version for $publisher.$extensionId (may not exist or network issue)"
+        Write-Host "Could not retrieve marketplace version for $publisher.$extensionId (may not exist or network issue)"
     }
     
     return $null
@@ -134,14 +134,14 @@ function should-skip-extension-creation
     $marketplaceVersion = get-marketplace-version -extensionId $extensionId -publisher $publisher
     
     if ($marketplaceVersion -and ($marketplaceVersion -eq $extensionVersion)) {
-        Write-Output "Extension $publisher.$extensionId version $extensionVersion already exists in marketplace, skipping creation"
+        Write-Host  "Extension $publisher.$extensionId version $extensionVersion already exists in marketplace, skipping creation"
         return $true
     }
     
     if ($marketplaceVersion) {
-        Write-Output "Extension $publisher.$extensionId marketplace version: $marketplaceVersion, building version: $extensionVersion"
+        Write-Host "Extension $publisher.$extensionId marketplace version: $marketplaceVersion, building version: $extensionVersion"
     } else {
-        Write-Output "Extension $publisher.$extensionId not found in marketplace or network issue, proceeding with creation"
+        Write-Host "Extension $publisher.$extensionId not found in marketplace or network issue, proceeding with creation"
     }
     
     return $false
