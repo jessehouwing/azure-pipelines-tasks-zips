@@ -1,5 +1,5 @@
 {
   "id": "nuget-deprecated",
-  "name": "NuGet (deprecated)",
-  "description": "Nuget tasks that were removed from Azure DevOps"
+  "name": "Compatibility Pack: NuGet",
+  "description": "Adds current version of Nuget tasks that were removed from Azure DevOps"
 }
