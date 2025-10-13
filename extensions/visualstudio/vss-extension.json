@@ -1,5 +1,5 @@
 {
-  "name": "Visual Studio 2022 for Azure DevOps Server",
-  "description": "Adds side-by-side version of Visual Studio 2022 for Azure DevOps Server.",
+  "name": "Compatibility Pack: vsbuild, msbuild, vstest",
+  "description": "Adds current version of Visual Studio 2022 for Azure DevOps Server.",
   "id": "visualstudio"
 }
