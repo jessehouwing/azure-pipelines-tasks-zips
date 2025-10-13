@@ -1,5 +1,5 @@
 {
-  "name": "AppCenter for Azure DevOps Server",
-  "description": "Adds side-by-side version of AppCenter tasks for Azure DevOps Server.",
+  "name": "Compatibility Pack: appcenterdistribute, appcentertest",
+  "description": "Adds current version of AppCenter tasks for Azure DevOps Server.",
   "id": "appcenter"
 }
