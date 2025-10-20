@@ -1,4 +1,4 @@
-# Visual Studio 2022 tasks for Azure DevOps Server
+# Visual Studio 2022 & 2026 tasks for Azure DevOps Server
 
 This extension will install the `vsbuild`, `msbuild`, `vstest` and `vstestplatforminstaller` with support for Visual Studio 2022 into your Azure DevOps Server.
 
