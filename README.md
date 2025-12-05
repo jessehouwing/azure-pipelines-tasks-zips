@@ -67,7 +67,8 @@ To work around this issue, you can [use the installation method that pushes the 
 DECLARE @keyvalues dbo.typ_keyvaluepairstringtablenullable;
 
 INSERT @keyvalues
-VALUES ('#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\', '40') 
+VALUES ('#\Configuration\Service\Gallery\LargeExtensionUpload\MaxPackageSizeMB\', '100') 
 
 exec prc_UpdateRegistry 1, @keyvalues
 ```
+
