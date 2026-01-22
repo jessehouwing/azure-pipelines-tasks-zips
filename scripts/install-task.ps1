@@ -54,7 +54,7 @@ if (!(Test-Path $TaskZip -PathType Leaf))
 $TaskZipInfo = Get-Item $TaskZip
 
 
-$base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Get-Item -LiteralPath $TaskZipInfo).FullName))
+$base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes($TaskZipInfo.FullName))
 $TaskZipInfo.Name
 
 if ($TaskZipInfo.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-]){3}[0-9a-f]{12})-(?<Version>\d+\.\d+\.\d+)\.zip$")
