@@ -50,7 +50,7 @@ if (!(Test-Path $TaskZip -PathType Leaf))
     throw "File does not exist: '$TaskZip'."
 }
 
-# Resolve the directory info.
+# Resolve the file info.
 $TaskZipInfo = Get-Item $TaskZip
 
 
