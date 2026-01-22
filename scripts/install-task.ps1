@@ -51,13 +51,13 @@ if (!(Test-Path $TaskZip -PathType Leaf))
 }
 
 # Resolve the directory info.
-$TaskZip = Get-Item $TaskZip
+$TaskZipInfo = Get-Item $TaskZip
 
 
-$base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Get-Item -LiteralPath $TaskZip).FullName))
-$TaskZip.Name
+$base64Zip = [System.Convert]::ToBase64String([System.IO.File]::ReadAllBytes((Get-Item -LiteralPath $TaskZipInfo).FullName))
+$TaskZipInfo.Name
 
-if ($TaskZip.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-]){3}[0-9a-f]{12})-(?<Version>\d+\.\d+\.\d+)\.zip$")
+if ($TaskZipInfo.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-]){3}[0-9a-f]{12})-(?<Version>\d+\.\d+\.\d+)\.zip$")
 {
     $manifest = $Matches
 
@@ -76,5 +76,5 @@ if ($TaskZip.Name -match "(?m)^(?<Name>.*)\.(?<Id>[0-9a-f]{8}[-](?:[0-9a-f]{4}[-
 }
 else
 {
-    throw "File does not match required pattern 'name-id.version.zip': '$TaskZip'."
+    throw "File does not match required pattern 'name.id-version.zip': '$TaskZip'."
 }
