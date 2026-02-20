@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: jessehouwing/actions-dependency-submission@4dc7b7fe66b1f347c027dc0e07587bac5a43bd07 # 1.0.8
+      - uses: jessehouwing/actions-dependency-submission@a5622604a0febc7f93be403fef611725e53c8084 # 1.0.9
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/dependency-review-action@05fe4576374b728f0c523d6a13d64c25081e0803 # 4.8.3
