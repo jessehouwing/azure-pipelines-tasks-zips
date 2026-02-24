@@ -2,7 +2,7 @@
   "targets": [
     {
       "id": "Microsoft.TeamFoundation.Server",
-      "version": "[16.0, 20.0)"
+      "version": "[16.0, 21.0)"
     }
   ],
   "public": true
