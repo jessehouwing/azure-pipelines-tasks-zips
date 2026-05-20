@@ -12,7 +12,36 @@ $pat = $env:AZURE_DEVOPS_PAT
 $url = "https://dev.azure.com/$org"
 $header = @{authorization = "Basic $([Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(".:$pat")))" }
 
-$tasks = Invoke-RestMethod -Uri "$url/_apis/distributedtask/tasks?allversions=true" -Method Get -ContentType "application/json" -Headers $header | ConvertFrom-Json -AsHashtable
+function Invoke-RestMethodWithRetry {
+    param(
+        [string] $uri,
+        [hashtable] $headers,
+        [int] $attempts = 5,
+        [int] $delaySeconds = 30
+    )
+
+    for ($attempt = 1; $attempt -le $attempts; $attempt++) {
+        try {
+            return Invoke-RestMethod -Uri $uri -Method Get -ContentType "application/json" -Headers $headers -ErrorAction Stop
+        }
+        catch {
+            $response = $_.Exception.Response
+            $statusCode = if ($response -and $response.StatusCode) { [int]$response.StatusCode } else { $null }
+            if ($statusCode -and $statusCode -notin @(408, 429, 500, 502, 503, 504)) {
+                throw
+            }
+
+            if ($attempt -eq $attempts) {
+                throw
+            }
+
+            Write-Warning "Request to $uri failed with status $statusCode ($($_.Exception.Message)) (attempt $attempt/$attempts). Retrying in $delaySeconds seconds..."
+            Start-Sleep -Seconds $delaySeconds
+        }
+    }
+}
+
+$tasks = Invoke-RestMethodWithRetry -uri "$url/_apis/distributedtask/tasks?allversions=true" -headers $header | ConvertFrom-Json -AsHashtable
 
 $taskMetadata = $tasks.value
 
