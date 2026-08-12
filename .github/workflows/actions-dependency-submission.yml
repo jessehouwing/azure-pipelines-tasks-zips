@@ -24,7 +24,7 @@ jobs:
         with:
           egress-policy: audit
 
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: jessehouwing/actions-dependency-submission@v1.0.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
