@@ -6,7 +6,7 @@ workflows:
     '.github/workflows/actions-dependency-submission.yml':
         - 'actions/checkout@v7.0.0'
         - 'actions/dependency-review-action@v5.0.0'
-        - 'jessehouwing/actions-dependency-submission@v1.0.15'
+        - 'jessehouwing/actions-dependency-submission@v1.0.17'
         - 'step-security/harden-runner@v2.19.4'
     '.github/workflows/powershell.yml':
         - 'actions/checkout@v7.0.0'
@@ -38,9 +38,9 @@ dependencies:
         commit: 'sha1-8aad20d150bbac5944a9f9d289da16a4b0d87c1e'
         owner_id: 9919
         repo_id: 259445878
-    'jessehouwing/actions-dependency-submission@v1.0.15':
-        ref: 'v1.0.15'
-        commit: 'sha1-d4ed9fd03b1c91e31a62d9a4095440128ec1316b'
+    'jessehouwing/actions-dependency-submission@v1.0.17':
+        ref: 'v1.0.17'
+        commit: 'sha1-aa358ec7aee0a7f2dbaef9702915b28e90879842'
         owner_id: 4173387
         repo_id: 1109249632
     'microsoft/psscriptanalyzer-action@v1.1':
