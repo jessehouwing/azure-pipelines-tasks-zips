@@ -10,7 +10,7 @@ workflows:
         - 'step-security/harden-runner@v2.19.4'
     '.github/workflows/powershell.yml':
         - 'actions/checkout@v7.0.0'
-        - 'github/codeql-action@v4.36.2'
+        - 'github/codeql-action@v4.38.0'
         - 'microsoft/psscriptanalyzer-action@v1.1'
         - 'step-security/harden-runner@v2.19.4'
     '.github/workflows/publish-tasks.yml':
@@ -33,9 +33,9 @@ dependencies:
         commit: 'sha1-48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e'
         owner_id: 44036562
         repo_id: 189476904
-    'github/codeql-action@v4.36.2':
-        ref: 'v4.36.2'
-        commit: 'sha1-8aad20d150bbac5944a9f9d289da16a4b0d87c1e'
+    'github/codeql-action@v4.38.0':
+        ref: 'v4.38.0'
+        commit: 'sha1-b96794f015dfd88f77b49b1c93e0fa7110f94c63'
         owner_id: 9919
         repo_id: 259445878
     'jessehouwing/actions-dependency-submission@v1.0.15':
